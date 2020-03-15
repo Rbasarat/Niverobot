@@ -1,4 +1,8 @@
 ﻿using System;
+using System.IO;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 
 namespace Niverobot
 {
@@ -6,7 +10,45 @@ namespace Niverobot
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var services = ConfigureServices();
+            // Generate a provider
+            var serviceProvider = services.BuildServiceProvider();
+            try
+            {
+                // Kick off our actual code
+                serviceProvider.GetService<ConsoleApplication>().Run();
+            }
+            finally
+            {
+                // Flush logs when application is finished.
+                Log.CloseAndFlush();
+            }
+        }
+        private static IServiceCollection ConfigureServices()
+        {
+            IServiceCollection services = new ServiceCollection();
+            // Set up the objects we need to get to configuration settings
+            var config = LoadConfiguration();
+
+            // Set up logger.
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(config)
+                .CreateLogger();
+
+            // Add the config to our DI container for later user
+            services.AddSingleton(config);
+            // IMPORTANT! Register our application entry point
+            services.AddTransient<ConsoleApplication>();
+
+            return services;
+        }
+
+        public static IConfiguration LoadConfiguration()
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json");
+            return builder.Build();
         }
     }
 }
