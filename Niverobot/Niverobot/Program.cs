@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
@@ -8,7 +9,7 @@ namespace Niverobot
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             var services = ConfigureServices();
             // Generate a provider
@@ -16,7 +17,7 @@ namespace Niverobot
             try
             {
                 // Kick off our actual code
-                serviceProvider.GetService<ConsoleApplication>().Run();
+                await serviceProvider.GetService<ConsoleApplication>().RunAsync();
             }
             finally
             {
