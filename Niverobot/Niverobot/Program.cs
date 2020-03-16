@@ -3,6 +3,8 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Niverobot.Interfaces;
+using Niverobot.Services;
 using Serilog;
 
 namespace Niverobot
@@ -38,6 +40,8 @@ namespace Niverobot
 
             // Add the config to our DI container for later user
             services.AddSingleton(config);
+            services.AddTransient<IDadJokeService, DadJokeService>();
+
             // IMPORTANT! Register our application entry point
             services.AddTransient<ConsoleApplication>();
 

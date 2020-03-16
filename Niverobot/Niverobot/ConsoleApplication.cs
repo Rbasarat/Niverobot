@@ -10,6 +10,7 @@ using Telegram.Bot.Types.InlineQueryResults;
 using Telegram.Bot.Types.InputFiles;
 using Telegram.Bot.Types.ReplyMarkups;
 using Serilog;
+using Niverobot.Interfaces;
 
 namespace Niverobot
 {
@@ -18,10 +19,11 @@ namespace Niverobot
         private static TelegramBotClient Bot;
 
         private readonly IConfiguration _config;
-        public ConsoleApplication(IConfiguration config)
+        private readonly IDadJokeService _dadJokeService;
+        public ConsoleApplication(IConfiguration config, IDadJokeService dadJokeService)
         {
-
             _config = config;
+            _dadJokeService = dadJokeService;
         }
 
         public async Task RunAsync()
@@ -45,7 +47,7 @@ namespace Niverobot
             Bot.StopReceiving();
         }
 
-        private static async void BotOnMessageReceived(object sender, MessageEventArgs messageEventArgs)
+        private async void BotOnMessageReceived(object sender, MessageEventArgs messageEventArgs)
         {
             var message = messageEventArgs.Message;
             if (message == null || message.Type != MessageType.Text) return;
@@ -53,7 +55,11 @@ namespace Niverobot
             switch (message.Text.Split(' ').First())
             {
                 case ".dadjoke":
-
+                    var joke = await _dadJokeService.GetDadJokeAsync();
+                    await Bot.SendTextMessageAsync(
+                        chatId: message.Chat.Id,
+                        text: joke
+                    );
                     break;
                 // send inline keyboard
                 //case "/inline":
@@ -140,7 +146,7 @@ namespace Niverobot
             }
         }
 
-        private static async void BotOnCallbackQueryReceived(object sender, CallbackQueryEventArgs callbackQueryEventArgs)
+        private async void BotOnCallbackQueryReceived(object sender, CallbackQueryEventArgs callbackQueryEventArgs)
         {
             var callbackQuery = callbackQueryEventArgs.CallbackQuery;
 
@@ -155,7 +161,7 @@ namespace Niverobot
             );
         }
 
-        private static async void BotOnInlineQueryReceived(object sender, InlineQueryEventArgs inlineQueryEventArgs)
+        private async void BotOnInlineQueryReceived(object sender, InlineQueryEventArgs inlineQueryEventArgs)
         {
             Console.WriteLine($"Received inline query from: {inlineQueryEventArgs.InlineQuery.From.Id}");
 
@@ -177,12 +183,12 @@ namespace Niverobot
             );
         }
 
-        private static void BotOnChosenInlineResultReceived(object sender, ChosenInlineResultEventArgs chosenInlineResultEventArgs)
+        private void BotOnChosenInlineResultReceived(object sender, ChosenInlineResultEventArgs chosenInlineResultEventArgs)
         {
             Console.WriteLine($"Received inline result: {chosenInlineResultEventArgs.ChosenInlineResult.ResultId}");
         }
 
-        private static void BotOnReceiveError(object sender, ReceiveErrorEventArgs receiveErrorEventArgs)
+        private void BotOnReceiveError(object sender, ReceiveErrorEventArgs receiveErrorEventArgs)
         {
             Log.Error("Received error: {0} — {1}",
                  receiveErrorEventArgs.ApiRequestException.ErrorCode,
