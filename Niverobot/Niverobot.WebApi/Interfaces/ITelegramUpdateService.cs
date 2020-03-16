@@ -3,7 +3,7 @@ using Telegram.Bot.Types;
 
 namespace Niverobot.WebApi.Interfaces
 {
-    public interface IUpdateService
+    public interface ITelegramUpdateService
     {
         Task EchoAsync(Update update);
     }

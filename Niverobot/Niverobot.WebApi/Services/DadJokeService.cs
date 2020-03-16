@@ -9,7 +9,7 @@ using System.Net;
 
 namespace Niverobot.WebApi.Services
 {
-    class DadJokeService : IDadJokeService
+    public class DadJokeService : IDadJokeService
     {
         private readonly IConfiguration _config;
 

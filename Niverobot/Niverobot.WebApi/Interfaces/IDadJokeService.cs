@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Niverobot.WebApi.Interfaces
 {
-    interface IDadJokeService
+    public interface IDadJokeService
     {
         Task<string> GetDadJokeAsync();
     }

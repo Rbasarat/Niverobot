@@ -6,11 +6,11 @@ using Telegram.Bot;
 
 namespace Niverobot.WebApi.Services
 {
-    public class BotService : IBotService
+    public class TelegramBotService : ITelegramBotService
     {
         private readonly BotConfiguration _botConfig;
 
-        public BotService(IOptions<BotConfiguration> config)
+        public TelegramBotService(IOptions<BotConfiguration> config)
         {
             _botConfig = config.Value;
             // use proxy if configured in appsettings.*.json

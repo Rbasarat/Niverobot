@@ -24,8 +24,10 @@ namespace Niverobot.WebApi
         {
             services.AddControllers().AddNewtonsoftJson();
 
-            services.AddScoped<IUpdateService, UpdateService>();
-            services.AddSingleton<IBotService, BotService>();
+            services.AddScoped<ITelegramUpdateService, TelegramUpdateService>();
+            services.AddSingleton<ITelegramBotService, TelegramBotService>();
+            services.AddSingleton<IMessageService, MessageService>();
+            services.AddTransient<IDadJokeService, DadJokeService>();
             services.Configure<BotConfiguration>(Configuration.GetSection("BotConfiguration"));
 
         }

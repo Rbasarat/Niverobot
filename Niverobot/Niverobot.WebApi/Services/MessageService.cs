@@ -3,14 +3,47 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Telegram.Bot.Types;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Niverobot.WebApi.Services
 {
     public class MessageService : IMessageService
     {
-        public string HandleTextMessage()
+        private readonly ITelegramBotService _telegramBotService;
+        private readonly IDadJokeService _dadJokeService;
+
+        public MessageService(ITelegramBotService telegramBotService, IDadJokeService dadJokeService)
         {
-            return "test";
+            _telegramBotService = telegramBotService;
+            _dadJokeService = dadJokeService;
+        }
+
+        public async Task HandleTextMessageAsync(Update update)
+        {
+            var message = update.Message;
+
+            switch (update.Message.Text.Split(' ').First())
+            {
+                case ".dadjoke":
+                    var joke = await _dadJokeService.GetDadJokeAsync();
+                    await _telegramBotService.Client.SendTextMessageAsync(
+                        chatId: message.Chat.Id,
+                        text: joke
+                    );
+                    break;
+                case ".niverhelp":
+
+                    const string usage = "Usage:\n" +
+                        ".dadjoke   - Tells you a dadjoke\n";
+
+                    await _telegramBotService.Client.SendTextMessageAsync(
+                        chatId: message.Chat.Id,
+                        text: usage,
+                        replyMarkup: new ReplyKeyboardRemove()
+                    );
+                    break;
+            }
         }
     }
 }

@@ -8,12 +8,12 @@ using Telegram.Bot.Types.Enums;
 
 namespace Niverobot.WebApi.Services
 {
-    public class UpdateService : IUpdateService
+    public class TelegramUpdateService : ITelegramUpdateService
     {
-        private readonly IBotService _botService;
+        private readonly ITelegramBotService _botService;
         private readonly IMessageService _messageService;
 
-        public UpdateService(IBotService botService, IMessageService messageService)
+        public TelegramUpdateService(ITelegramBotService botService, IMessageService messageService)
         {
             _botService = botService;
             _messageService = messageService;
@@ -31,7 +31,7 @@ namespace Niverobot.WebApi.Services
             switch (message.Type)
             {
                 case MessageType.Text:
-                    await _botService.Client.SendTextMessageAsync(message.Chat.Id, message.Text);
+                    await _messageService.HandleTextMessageAsync(update);
                     break;
 
                     //case MessageType.Photo:

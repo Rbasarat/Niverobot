@@ -2,7 +2,7 @@
 
 namespace Niverobot.WebApi.Interfaces
 {
-    public interface IBotService
+    public interface ITelegramBotService
     {
         TelegramBotClient Client { get; }
     }
