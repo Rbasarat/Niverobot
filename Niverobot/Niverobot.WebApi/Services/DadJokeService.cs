@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Niverobot.Interfaces;
+using Niverobot.WebApi.Interfaces;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Text.Json;
@@ -7,7 +7,7 @@ using Domain;
 using Serilog;
 using System.Net;
 
-namespace Niverobot.Services
+namespace Niverobot.WebApi.Services
 {
     class DadJokeService : IDadJokeService
     {

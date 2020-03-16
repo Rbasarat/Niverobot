@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Niverobot.Interfaces
+namespace Niverobot.WebApi.Interfaces
 {
     interface IDadJokeService
     {
