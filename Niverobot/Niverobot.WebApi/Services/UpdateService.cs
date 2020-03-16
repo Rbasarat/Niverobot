@@ -11,10 +11,12 @@ namespace Niverobot.WebApi.Services
     public class UpdateService : IUpdateService
     {
         private readonly IBotService _botService;
+        private readonly IMessageService _messageService;
 
-        public UpdateService(IBotService botService)
+        public UpdateService(IBotService botService, IMessageService messageService)
         {
             _botService = botService;
+            _messageService = messageService;
         }
 
         public async Task EchoAsync(Update update)
@@ -29,23 +31,22 @@ namespace Niverobot.WebApi.Services
             switch (message.Type)
             {
                 case MessageType.Text:
-                    // Echo each Message
                     await _botService.Client.SendTextMessageAsync(message.Chat.Id, message.Text);
                     break;
 
-                case MessageType.Photo:
-                    // Download Photo
-                    var fileId = message.Photo.LastOrDefault()?.FileId;
-                    var file = await _botService.Client.GetFileAsync(fileId);
+                    //case MessageType.Photo:
+                    //    // Download Photo
+                    //    var fileId = message.Photo.LastOrDefault()?.FileId;
+                    //    var file = await _botService.Client.GetFileAsync(fileId);
 
-                    var filename = file.FileId + "." + file.FilePath.Split('.').Last();
-                    using (var saveImageStream = System.IO.File.Open(filename, FileMode.Create))
-                    {
-                        await _botService.Client.DownloadFileAsync(file.FilePath, saveImageStream);
-                    }
+                    //    var filename = file.FileId + "." + file.FilePath.Split('.').Last();
+                    //    using (var saveImageStream = System.IO.File.Open(filename, FileMode.Create))
+                    //    {
+                    //        await _botService.Client.DownloadFileAsync(file.FilePath, saveImageStream);
+                    //    }
 
-                    await _botService.Client.SendTextMessageAsync(message.Chat.Id, "Thx for the Pics");
-                    break;
+                    //    await _botService.Client.SendTextMessageAsync(message.Chat.Id, "Thx for the Pics");
+                    //    break;
             }
         }
     }

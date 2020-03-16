@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Niverobot.WebApi.Interfaces;
-using Niverobot.WebApi.Middleware;
 using Niverobot.WebApi.Services;
 
 namespace Niverobot.WebApi
@@ -23,7 +22,7 @@ namespace Niverobot.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
 
             services.AddScoped<IUpdateService, UpdateService>();
             services.AddSingleton<IBotService, BotService>();
