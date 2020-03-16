@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 - Added Serilog logging
 - Added file logging.
 - Added telegram polling integration
+- Added Dadjoke functionality
 ### Changed
  
 ### Fixed
