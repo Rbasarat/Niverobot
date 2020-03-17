@@ -2,6 +2,7 @@ image: docker:stable
 
 services:
   - docker:dind
+    alias: docker
 
 # Disable tls because dind.
 variables:
