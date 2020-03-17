@@ -1,47 +1,32 @@
-# this should be the same as the dockerfile image.
-image: mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim
+image: docker:stable
 
-before_script:
-    - cd Niverobot
+services:
+  - docker:dind
 
 stages:
-    # - build
+    - build
     #- test
-    - deploy
-    
-variables:
-    publishdir: "bin/release/"
+    # - deploy
 
-# build:
-    # stage: build
-    # script:
-    #     - "dotnet restore"
-    #     - "dotnet build -c release"
-    # artifacts:
-    #     paths:
-    #         - "Niverobot/Niverobot.WebApi/bin/"
-    #     expire_in: 1 week
-        
-# test:
-#     stage: test
-#     script: 
-#         - "dotnet test"
-#         - echo "testing"
+build:
+  before_script:
+    - docker login -u Niverhawk -p $access_token $CI_REGISTRY
+  script:
+    - docker build -t ${CI_REGISTRY}/${CI_PROJECT_PATH}:dev -f Niverobot.WebApi/Dockerfile .
+  stage: build
+  except:
+    - master
 
-deploy: 
-    stage: deploy
-    variables:
-        deploy_path: "src/App/"
-    # only:
-    #     - master
-    # artifacts:
-    #     paths:
-    #         - Niverobot/Niverobot.WebApi/bin/
-    #     expire_in: 1 week
-    script:
-    # publish the files - this will generate the publish files in bin/release 
-    - docker build
-    # install zip and lftp
-    # - apt-get update -qq && apt-get install -y -qq zip lftp 
-    # # upload file to ftp
-    # - lftp -e "set ssl:verify-certificate no; lpwd; open $FTP_HOST; user $FTP_USERNAME $FTP_PASSWORD; put -O /files/ CreativelyCode.zip; bye"
+# deploy:
+#   # only:
+#   #   - master
+#   before_script:
+#     - docker login -u Niverhawk -p $access_token $CI_REGISTRY
+#   script:
+#     - docker build -t ${CI_REGISTRY}/Niverobot:latest -f Niverobot.WebApi/Dockerfile --build-arg BotConfiguration__BotToken=$BotConfiguration__BotToken .
+#     - docker push ${CI_REGISTRY}/Niverobot:latest
+#   after_script:
+#     - docker logout ${CI_REGISTRY}
+#   stage: build
+#   tags: 
+#     - docker
