@@ -7,34 +7,30 @@ variables:
   # Use TLS https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled
   DOCKER_HOST: tcp://docker:2376
   DOCKER_TLS_CERTDIR: "/certs"
+  CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest
 
 before_script:
   - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   - cd Niverobot
 
 stages:
-    - build
-    #- test
-    # - deploy
+    # - build
+    - deploy
 
-# before_script:
-#   - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
-
-build:
-  script:
-    - docker build -t test -f Niverobot.WebApi/Dockerfile .
-  stage: build
-  except:
-    - master
-
-# deploy:
-#   # only:
-#   #   - master
+# build:
 #   script:
-#     - docker build -t ${CI_REGISTRY}/Niverobot:latest -f Niverobot.WebApi/Dockerfile --build-arg BotConfiguration__BotToken=$BotConfiguration__BotToken .
-#     - docker push ${CI_REGISTRY}/Niverobot:latest
-#   after_script:
-#     - docker logout ${CI_REGISTRY}
+#     - docker build -t test -f Niverobot.WebApi/Dockerfile .
 #   stage: build
-#   tags: 
-#     - docker
+#   except:
+#     - master
+
+deploy:
+  # only:
+  #   - master
+  script:
+    - docker build -t ${CI_REGISTRY}/Nivero/Niverobot -f Niverobot.WebApi/Dockerfile --build-arg BotConfiguration__BotToken=$BotConfiguration__BotToken .
+    - docker push ${CI_REGISTRY}/Nivero/Niverobot:latest
+  after_script:
+    - docker logout ${CI_REGISTRY}
+  stage: deploy
