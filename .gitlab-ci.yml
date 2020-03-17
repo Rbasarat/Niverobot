@@ -1,16 +1,15 @@
-image: docker:latest
-  
+image: docker:19.03.1
+services:
+  - docker:19.03.1-dind
+
 variables:
-  DOCKER_HOST: tcp://docker:2375/
-  DOCKER_DRIVER: overlay2
-  # See https://github.com/docker-library/docker/pull/166
-  DOCKER_TLS_CERTDIR: "/certs"
+  # Use TLS https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled
+  DOCKER_HOST: tcp://docker:2376
+  DOCKER_TLS_CERTDIR: ""
+
 
 services:
   - docker:dind
-
-before_script:
-  - docker info
 
 stages:
     - build
