@@ -14,7 +14,7 @@ variables:
 build:
     stage: build
     script:
-        - "ls"
+        - "dotnet build"
     artifacts:
         paths:
             - "bin/"
