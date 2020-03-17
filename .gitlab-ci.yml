@@ -1,10 +1,11 @@
-image: mcr.microsoft.com/dotnet/core/sdk:latest
+# this should be the same as the dockerfile image.
+image: mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim
 
 before_script:
     - cd Niverobot
 
 stages:
-    - build
+    # - build
     #- test
     - deploy
     
@@ -12,14 +13,14 @@ variables:
     publishdir: "bin/release/"
 
 build:
-    stage: build
-    script:
-        - "dotnet restore"
-        - "dotnet build -c release"
-    artifacts:
-        paths:
-            - "Niverobot/Niverobot.WebApi/bin/"
-        expire_in: 1 week
+    # stage: build
+    # script:
+    #     - "dotnet restore"
+    #     - "dotnet build -c release"
+    # artifacts:
+    #     paths:
+    #         - "Niverobot/Niverobot.WebApi/bin/"
+    #     expire_in: 1 week
         
 # test:
 #     stage: test
@@ -33,13 +34,13 @@ deploy:
         deploy_path: "src/App/"
     # only:
     #     - master
-    artifacts:
-        paths:
-            - Niverobot/Niverobot.WebApi/bin/
-        expire_in: 1 week
+    # artifacts:
+    #     paths:
+    #         - Niverobot/Niverobot.WebApi/bin/
+    #     expire_in: 1 week
     script:
     # publish the files - this will generate the publish files in bin/release 
-    - dotnet publish -c release -o Niverobot/Niverobot.WebApi/artifacts/
+    - docker build
     # install zip and lftp
     # - apt-get update -qq && apt-get install -y -qq zip lftp 
     # # upload file to ftp
