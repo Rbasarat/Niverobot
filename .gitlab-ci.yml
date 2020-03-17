@@ -14,7 +14,8 @@ variables:
 build:
     stage: build
     script:
-        - "dotnet build"
+        - "dotnet restore"
+        - "dotnet build -c release"
     artifacts:
         paths:
             - "Niverobot/Niverobot.WebApi/bin/"
@@ -26,27 +27,20 @@ build:
 #         - "dotnet test"
 #         - echo "testing"
 
-# deploy: 
-#     stage: deploy
-#     variables:
-#         deploy_path: "src/App/"
-#     only:
-#         - master
-#     artifacts:
-#         paths:
-#             - src/App/bin/release
-#         expire_in: 1 week
-#     script:
-#     # cd to where csproj is
-#     - cd $deploy_path
-#     # publish the files - this will generate the publish files in bin/release 
-#     - dotnet publish -c release
-#     # install zip and lftp
-#     - apt-get update -qq && apt-get install -y -qq zip lftp 
-#     # cd to bin
-#     - cd bin
-#     # zip release, name zip CreativelyCode.zip
-#     - mkdir prep
-#     - zip -r CreativelyCode release
-#     # upload file to ftp
-#     - lftp -e "set ssl:verify-certificate no; lpwd; open $FTP_HOST; user $FTP_USERNAME $FTP_PASSWORD; put -O /files/ CreativelyCode.zip; bye"
+deploy: 
+    stage: deploy
+    variables:
+        deploy_path: "src/App/"
+    only:
+        - master
+    artifacts:
+        paths:
+            - Niverobot/Niverobot.WebApi/bin/
+        expire_in: 1 week
+    script:
+    # publish the files - this will generate the publish files in bin/release 
+    - dotnet publish -c release -o Niverobot/Niverobot.WebApi/artifacts/
+    # install zip and lftp
+    # - apt-get update -qq && apt-get install -y -qq zip lftp 
+    # # upload file to ftp
+    # - lftp -e "set ssl:verify-certificate no; lpwd; open $FTP_HOST; user $FTP_USERNAME $FTP_PASSWORD; put -O /files/ CreativelyCode.zip; bye"
