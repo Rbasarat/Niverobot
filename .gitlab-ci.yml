@@ -26,7 +26,8 @@ deploy:
   #   - master
   before_script:
     - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
-    - cd Nivero
+    - pwd
+    - ls -l
   script:
     - docker build -t $CI_REGISTRY/nivero/niverobot -f Niverobot.WebApi/Dockerfile --build-arg BotConfiguration__BotToken=$BotToken .
     - docker push $CI_REGISTRY/nivero/niverobot:latest
