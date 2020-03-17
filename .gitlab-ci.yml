@@ -29,8 +29,8 @@ deploy:
   # only:
   #   - master
   script:
-    - docker build -t ${CI_REGISTRY}/nivero/niverobot -f Niverobot.WebApi/Dockerfile --build-arg BotConfiguration__BotToken=$BotConfiguration__BotToken .
-    - docker push ${CI_REGISTRY}/nivero/Niverobot:latest
+    - docker build -t ${CI_REGISTRY}/nivero/niverobot -f Niverobot.WebApi/Dockerfile --build-arg BotConfiguration__BotToken=$BotToken .
+    - docker push ${CI_REGISTRY}/nivero/niverobot:latest
   after_script:
     - docker logout ${CI_REGISTRY}
   stage: deploy
