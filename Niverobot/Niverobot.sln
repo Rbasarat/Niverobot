@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Niverobot", "Niverobot\Niverobot.csproj", "{008D03A7-D411-49AA-985B-B58C6AD9C01B}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OtherFiles", "OtherFiles", "{C8B769F0-33AB-4902-AB99-81CB4507F477}"
 	ProjectSection(SolutionItems) = preProject
 		..\CHANGELOG.md = ..\CHANGELOG.md
 		..\README.md = ..\README.md
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Niverobot.WebApi", "Niverobot.WebApi\Niverobot.WebApi.csproj", "{F2DFF3D3-DCC3-482F-B281-6CDE912BA7AF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Niverobot.Domain", "Niverobot.Domain\Niverobot.Domain.csproj", "{31A01D49-B809-4527-9919-9011E1871D6A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +19,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{008D03A7-D411-49AA-985B-B58C6AD9C01B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{008D03A7-D411-49AA-985B-B58C6AD9C01B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{008D03A7-D411-49AA-985B-B58C6AD9C01B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{008D03A7-D411-49AA-985B-B58C6AD9C01B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2DFF3D3-DCC3-482F-B281-6CDE912BA7AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2DFF3D3-DCC3-482F-B281-6CDE912BA7AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2DFF3D3-DCC3-482F-B281-6CDE912BA7AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2DFF3D3-DCC3-482F-B281-6CDE912BA7AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31A01D49-B809-4527-9919-9011E1871D6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31A01D49-B809-4527-9919-9011E1871D6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31A01D49-B809-4527-9919-9011E1871D6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31A01D49-B809-4527-9919-9011E1871D6A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
