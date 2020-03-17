@@ -44,8 +44,14 @@ deploy:
   before_script:
   - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
   - eval $(ssh-agent -s)
-  - ssh-add <(echo "$SSH_PRIVATE_KEY")
-  - mkdir -p ~/.ssh
-  - chmod 700 ~/.ssh
+  - echo "$SSH_PRIVATE_KEY"
+  - echo "$SSH_PRIVATE_KEY" > key
+  - cat key
+  - chmod 600 key
+  - ssh-add key
+  - rm key
+  # - ssh-add <(echo "$SSH_PRIVATE_KEY")
+  # - mkdir -p ~/.ssh
+  # - chmod 700 ~/.ssh
   script:
     - ssh niverhawk@51.83.74.19 touch test
