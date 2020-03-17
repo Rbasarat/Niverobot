@@ -1,7 +1,7 @@
-image: $CI_REGISTRY/group/project/docker:19.03.1
+image: docker:latest
 
 services:
-  - name: $CI_REGISTRY/group/project/docker:19.03.1-dind
+  - name: docker:dind
     alias: docker
 
 # Disable tls because dind.
