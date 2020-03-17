@@ -11,7 +11,7 @@ variables:
 build:
     stage: build
     script:
-        - "pwd"
+        - "ls"
     artifacts:
         paths:
             - "bin/"
