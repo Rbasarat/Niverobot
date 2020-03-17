@@ -50,6 +50,7 @@ deploy:
   - chmod 600 key
   - ssh-add key
   - rm key
+  - ssh niverhawk@51.83.74.19 touch test
   # - ssh-add <(echo "$SSH_PRIVATE_KEY")
   # - mkdir -p ~/.ssh
   # - chmod 700 ~/.ssh
