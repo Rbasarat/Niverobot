@@ -2,7 +2,7 @@ image: microsoft/dotnet:latest
 
 stages:
     - build
-    - test
+    #- test
     # - deploy
     
 variables:
@@ -11,17 +11,17 @@ variables:
 build:
     stage: build
     script:
-        - "dotnet build"
+        - "pwd"
     artifacts:
         paths:
             - "bin/"
         expire_in: 1 week
         
-test:
-    stage: test
-    script: 
-        - "dotnet test"
-        - echo "testing"
+# test:
+#     stage: test
+#     script: 
+#         - "dotnet test"
+#         - echo "testing"
 
 # deploy: 
 #     stage: deploy
