@@ -50,4 +50,5 @@ deploy:
   - chmod 644 ~/.ssh/known_hosts
 
   script:
-    - ssh niverhawk@51.83.74.19 docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY && docker run -e BotConfiguration__BotToken=$BOT_TOKEN -v logvolume:~/niverobot -p 127.0.0.1:5000/localhost:5000 $CI_REGISTRY/niverhawk/$IMAGE_NAME
+    - ssh niverhawk@51.83.74.19 docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - ssh niverhawk@51.83.74.19 docker run -e BotConfiguration__BotToken=$BOT_TOKEN -v logvolume:~/niverobot -p 127.0.0.1:5000/localhost:5000 $CI_REGISTRY/niverhawk/$IMAGE_NAME
