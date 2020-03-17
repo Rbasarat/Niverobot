@@ -5,32 +5,47 @@ services:
 
 variables:
   # Use TLS https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled
-  DOCKER_HOST: tcp://docker:2376
   DOCKER_TLS_CERTDIR: "/certs"
   IMAGE_NAME: niverobot
 
 stages:
-    # - build
+    - build
+    - release
     - deploy
 
-# build:
-#   before_script:
-#     - cd Nivero
-#   script:
-#     - docker build -t test -f Niverobot.WebApi/Dockerfile .
-#   stage: build
-#   except:
-#     - master
+build:
+  before_script:
+    - cd Nivero
+  script:
+    - docker build -t test -f Niverobot.WebApi/Dockerfile .
+  stage: build
+  except:
+    - master
 
-deploy:
-  # only:
-  #   - master
+release:
+  only:
+    - master
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - cd Niverobot
   script:
-    - docker build -t $CI_REGISTRY/niverhawk/$IMAGE_NAME -f Niverobot.WebApi/Dockerfile --build-arg BotConfiguration__BotToken=$BotToken .
+    - docker build -t $CI_REGISTRY/niverhawk/$IMAGE_NAME -f Niverobot.WebApi/Dockerfile .
     - docker push $CI_REGISTRY/niverhawk/$IMAGE_NAME
+    - ssh root@server docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY && touch test
   after_script:
     - docker logout $CI_REGISTRY
+  stage: release
+
+deploy:
+  # only:
+  #   - master
   stage: deploy
+  before_script:before_script:
+  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+  - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - ssh niverhawk@51.83.74.19 docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY && touch test
