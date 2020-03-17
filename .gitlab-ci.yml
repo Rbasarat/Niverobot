@@ -4,8 +4,7 @@ services:
 
 # Disable tls because dind.
 variables:
-  # Use TLS https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled
-  DOCKER_HOST: tcp://docker:2376
+  DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: ""
 
 stages:
@@ -15,7 +14,7 @@ stages:
 
 before_script:
   - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
-  
+
 build:
   script:
     - docker build -t ${CI_REGISTRY}/${CI_PROJECT_PATH}:dev -f Niverobot.WebApi/Dockerfile .
