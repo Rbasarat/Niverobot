@@ -21,7 +21,7 @@ stages:
 
 build:
   script:
-    - docker build -t test Niverobot.WebApi/Dockerfile .
+    - docker build -t test -f Niverobot.WebApi/Dockerfile .
   stage: build
   except:
     - master
