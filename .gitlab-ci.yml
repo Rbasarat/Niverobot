@@ -7,6 +7,7 @@ variables:
   # Use TLS https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled
   DOCKER_HOST: tcp://docker:2376
   DOCKER_TLS_CERTDIR: "/certs"
+  IMAGE_NAME: niverobot
 
 stages:
     # - build
@@ -28,8 +29,8 @@ deploy:
     - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
     - cd Niverobot
   script:
-    - docker build -t $CI_REGISTRY/niverhawk/niverobot -f Niverobot.WebApi/Dockerfile --build-arg BotConfiguration__BotToken=$BotToken .
-    - docker push $CI_REGISTRY/niverhawk/niverobot:latest
+    - docker build -t $IMAGE_NAME -f Niverobot.WebApi/Dockerfile --build-arg BotConfiguration__BotToken=$BotToken .
+    - docker push $IMAGE_NAME
   after_script:
     - docker logout $CI_REGISTRY
   stage: deploy
