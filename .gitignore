@@ -35,3 +35,7 @@ msbuild.wrn
 
 # Logging
 Logs
+
+**/appsettings.development.json
+**/appsettings.staging.json
+**/appsettings.production.json
