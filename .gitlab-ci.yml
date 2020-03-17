@@ -17,7 +17,7 @@ build:
         - "dotnet build"
     artifacts:
         paths:
-            - "Niverobot.WebApi/bin/"
+            - "Niverobot/Niverobot.WebApi/bin/"
         expire_in: 1 week
         
 # test:
