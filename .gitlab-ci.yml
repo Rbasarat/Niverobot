@@ -1,7 +1,4 @@
-image: docker:19.03.1
-
-services:
-  - docker:19.03.1-dind
+image: ubuntu:latest
 
 variables:
   # Use TLS https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled
@@ -14,6 +11,9 @@ stages:
     - deploy
 
 # build:
+# image: docker:19.03.1
+# services:
+#   - docker:19.03.1-dind
 #   before_script:
 #     - cd Nivero
 #   script:
@@ -41,12 +41,10 @@ deploy:
   #   - master
   stage: deploy
   before_script:
-  # - 'which ssh-agent || ( apt update -y && apt install openssh-client -y )'
-  # - eval $(ssh-agent -s)
-  # - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-  # - mkdir -p ~/.ssh
-  # - chmod 700 ~/.ssh
-  - cat /etc/os-release
-  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
+  - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
   script:
     - ssh niverhawk@51.83.74.19 docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY && touch test
