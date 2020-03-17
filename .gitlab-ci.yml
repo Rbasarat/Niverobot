@@ -1,7 +1,7 @@
-image: docker:stable
+image: $CI_REGISTRY/group/project/docker:19.03.1
 
 services:
-  - docker:dind
+  - name: $CI_REGISTRY/group/project/docker:19.03.1-dind
     alias: docker
 
 # Disable tls because dind.
@@ -13,9 +13,10 @@ stages:
     #- test
     # - deploy
 
+before_script:
+  - docker login -u Niverhawk -p $accessToken ${CI_REGISTRY}
+
 build:
-  before_script:
-    - docker login -u Niverhawk -p $access_token ${CI_REGISTRY}
   script:
     - docker build -t ${CI_REGISTRY}/${CI_PROJECT_PATH}:dev -f Niverobot.WebApi/Dockerfile .
   stage: build
@@ -25,8 +26,6 @@ build:
 # deploy:
 #   # only:
 #   #   - master
-#   before_script:
-#     - docker login -u Niverhawk -p $access_token $CI_REGISTRY
 #   script:
 #     - docker build -t ${CI_REGISTRY}/Niverobot:latest -f Niverobot.WebApi/Dockerfile --build-arg BotConfiguration__BotToken=$BotConfiguration__BotToken .
 #     - docker push ${CI_REGISTRY}/Niverobot:latest
