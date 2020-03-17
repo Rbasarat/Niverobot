@@ -2,8 +2,8 @@ image: microsoft/dotnet:latest
 
 stages:
     - build
-#    - test
-#    - deploy
+    - test
+    # - deploy
     
 variables:
     publishdir: "bin/release/"
@@ -18,32 +18,32 @@ build:
         expire_in: 1 week
         
 test:
-    stage: .pre
+    stage: test
     script: 
         - "dotnet test"
         - echo "testing"
 
-deploy: 
-    stage: deploy
-    variables:
-        deploy_path: "src/App/"
-    only:
-        - master
-    artifacts:
-        paths:
-            - src/App/bin/release
-        expire_in: 1 week
-    script:
-    # cd to where csproj is
-    - cd $deploy_path
-    # publish the files - this will generate the publish files in bin/release 
-    - dotnet publish -c release
-    # install zip and lftp
-    - apt-get update -qq && apt-get install -y -qq zip lftp 
-    # cd to bin
-    - cd bin
-    # zip release, name zip CreativelyCode.zip
-    - mkdir prep
-    - zip -r CreativelyCode release
-    # upload file to ftp
-    - lftp -e "set ssl:verify-certificate no; lpwd; open $FTP_HOST; user $FTP_USERNAME $FTP_PASSWORD; put -O /files/ CreativelyCode.zip; bye"
+# deploy: 
+#     stage: deploy
+#     variables:
+#         deploy_path: "src/App/"
+#     only:
+#         - master
+#     artifacts:
+#         paths:
+#             - src/App/bin/release
+#         expire_in: 1 week
+#     script:
+#     # cd to where csproj is
+#     - cd $deploy_path
+#     # publish the files - this will generate the publish files in bin/release 
+#     - dotnet publish -c release
+#     # install zip and lftp
+#     - apt-get update -qq && apt-get install -y -qq zip lftp 
+#     # cd to bin
+#     - cd bin
+#     # zip release, name zip CreativelyCode.zip
+#     - mkdir prep
+#     - zip -r CreativelyCode release
+#     # upload file to ftp
+#     - lftp -e "set ssl:verify-certificate no; lpwd; open $FTP_HOST; user $FTP_USERNAME $FTP_PASSWORD; put -O /files/ CreativelyCode.zip; bye"
