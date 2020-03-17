@@ -1,12 +1,11 @@
-image: docker:latest
+image: docker:19.03.6
 
 services:
-  - name: docker:dind
-    alias: docker
+  - docker:19.03.6-dind
 
 # Disable tls because dind.
 variables:
-  DOCKER_TLS_CERTDIR: ""
+   DOCKER_TLS_CERTDIR: "/certs"
 
 stages:
     - build
