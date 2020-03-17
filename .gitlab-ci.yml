@@ -40,7 +40,7 @@ deploy:
   # only:
   #   - master
   stage: deploy
-  before_script:before_script:
+  before_script:
   - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
   - eval $(ssh-agent -s)
   - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
