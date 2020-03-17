@@ -18,7 +18,7 @@ build:
         expire_in: 1 week
         
 test:
-    stage: test
+    stage: .pre
     script: 
         - "dotnet test"
         - echo "testing"
