@@ -8,14 +8,13 @@ variables:
   DOCKER_HOST: tcp://docker:2376
   DOCKER_TLS_CERTDIR: "/certs"
 
-before_script:
-  - cd Niverobot
-
 stages:
     # - build
     - deploy
 
 # build:
+#   before_script:
+#     - cd Nivero
 #   script:
 #     - docker build -t test -f Niverobot.WebApi/Dockerfile .
 #   stage: build
@@ -26,7 +25,8 @@ deploy:
   # only:
   #   - master
   before_script:
-  - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
+    - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
+    - cd Nivero
   script:
     - docker build -t $CI_REGISTRY/nivero/niverobot -f Niverobot.WebApi/Dockerfile --build-arg BotConfiguration__BotToken=$BotToken .
     - docker push $CI_REGISTRY/nivero/niverobot:latest
