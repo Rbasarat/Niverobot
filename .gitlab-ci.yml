@@ -26,6 +26,7 @@ deploy:
   #   - master
   before_script:
     - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
+    - cd Niverobot
     - pwd
     - ls -l
   script:
