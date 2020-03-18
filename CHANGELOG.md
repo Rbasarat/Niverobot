@@ -12,7 +12,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 - Added endpoint
 - Integrated telegram API
 - Added dadjoke functionality
+- Added gitlab ci/cd
 
 ### Changed
- 
+ - Integrated Docker
 ### Fixed
