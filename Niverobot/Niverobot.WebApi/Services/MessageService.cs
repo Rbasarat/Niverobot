@@ -1,6 +1,5 @@
 ﻿using Niverobot.WebApi.Interfaces;
-using System;
-using System.Collections.Generic;
+using Serilog;
 using System.Linq;
 using System.Threading.Tasks;
 using Telegram.Bot.Types;
@@ -26,6 +25,7 @@ namespace Niverobot.WebApi.Services
             switch (update.Message.Text.Split(' ').First())
             {
                 case ".dadjoke":
+                    Log.Information("received dadjoke with chat id:{0}", message.Chat.Id);
                     var joke = await _dadJokeService.GetDadJokeAsync();
                     await _telegramBotService.Client.SendTextMessageAsync(
                         chatId: message.Chat.Id,
