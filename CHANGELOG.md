@@ -13,7 +13,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 - Integrated telegram API
 - Added dadjoke functionality
 - Added gitlab ci/cd
+- Added translation for .dadjoke
 
 ### Changed
  - Integrated Docker
+ - Removed https inside container
 ### Fixed
