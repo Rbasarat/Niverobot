@@ -2,8 +2,15 @@
 All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
+## NEXT
+ 
+### Added
 
-## V0.0.0
+### Changed
+
+### Fixed
+
+## V1.0.0
  
 ### Added
 - Basic Scaffolding for web api app.
@@ -14,7 +21,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 - Added dadjoke functionality
 - Added gitlab ci/cd
 - Added translation for .dadjoke
-
 ### Changed
  - Integrated Docker
  - Removed https inside container
