@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Domain;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
