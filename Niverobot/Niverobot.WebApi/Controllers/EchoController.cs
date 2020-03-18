@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
+using Telegram.Bot.Types;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,8 +22,10 @@ namespace Niverobot.WebApi.Controllers
 
         // POST api/<controller>
         [HttpPost]
-        public IActionResult Post()
+        public IActionResult Post([FromBody]Update update)
         {
+            Log.Information("echo post recieved");
+            Log.Information(update.ToString());
             return Ok("Hello post!");
         }
 
