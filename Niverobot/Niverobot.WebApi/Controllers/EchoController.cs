@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Serilog;
+﻿using Microsoft.AspNetCore.Mvc;
 using Telegram.Bot.Types;
+
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -22,14 +18,10 @@ namespace Niverobot.WebApi.Controllers
 
         // POST api/<controller>
         [HttpPost]
-        public IActionResult Post([FromBody]Update update)
+        public IActionResult Post([FromBody] Update body)
         {
-            Log.Information("echo post recieved");
-            Log.Information(update.ToString());
-            return Ok("Hello post!");
+            return Ok("you did it:" + body.Message.Text);
+
         }
-
-        // PUT api/<controller>/5
-
     }
 }
