@@ -1,0 +1,57 @@
+variables:
+  # Use TLS https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled
+  DOCKER_TLS_CERTDIR: "/certs"
+  IMAGE_NAME: niverobot
+
+stages:
+    - build
+    - release
+    - deploy
+
+build:
+  image: docker:19.03.1
+  services:
+    - docker:19.03.1-dind
+  before_script:
+    - cd Niverobot
+  script:
+    - docker build -t $CI_REGISTRY/niverhawk/$IMAGE_NAME -f Niverobot.WebApi/Dockerfile .
+  stage: build
+  except:
+    - master
+
+release:
+  image: docker:19.03.1
+  services:
+    - docker:19.03.1-dind
+  only:
+    - master
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - cd Niverobot
+  script:
+    - docker build -t $CI_REGISTRY/$CI_REGISTRY_USER/$IMAGE_NAME -f Niverobot.WebApi/Dockerfile .
+    - docker push $CI_REGISTRY/$CI_REGISTRY_USER/$IMAGE_NAME
+  after_script:
+    - docker logout $CI_REGISTRY
+  stage: release
+
+deploy:
+  image: ubuntu:latest
+  only:
+    - master
+  stage: deploy
+  before_script:
+  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
+  - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+  - mkdir -p ~/.ssh && touch ~/.ssh/known_hosts
+  - ssh-keyscan -t rsa 51.83.74.19 > ~/.ssh/known_hosts
+  - chmod 644 ~/.ssh/known_hosts
+
+  script:
+    - ssh niverhawk@51.83.74.19 docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - ssh niverhawk@51.83.74.19 docker pull $CI_REGISTRY/niverhawk/$IMAGE_NAME:latest
+    - ssh niverhawk@51.83.74.19 docker stop niverobot 
+    - ssh niverhawk@51.83.74.19 docker rm niverobot 
+    - ssh niverhawk@51.83.74.19 docker run -d -e BotConfiguration__BotToken=$BOT_TOKEN -p 5000:80 --name niverobot -v /home/niverhawk/niverobot:/app/Logs $CI_REGISTRY/niverhawk/$IMAGE_NAME

@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Domain;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,7 +21,8 @@ namespace Niverobot.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers().AddNewtonsoftJson();
+            services.AddControllers();
+            services.AddMvc().AddNewtonsoftJson();
 
             services.AddScoped<ITelegramUpdateService, TelegramUpdateService>();
             services.AddSingleton<ITelegramBotService, TelegramBotService>();
@@ -39,8 +39,6 @@ namespace Niverobot.WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseHttpsRedirection();
 
             app.UseRouting();
 

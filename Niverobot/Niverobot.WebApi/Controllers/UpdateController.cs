@@ -23,11 +23,5 @@ namespace Niverobot.WebApi.Controllers
             await _updateService.EchoAsync(update);
             return Ok();
         }
-
-        [HttpGet]
-        public IActionResult Get()
-        {
-            return Ok();
-        }
     }
 }
