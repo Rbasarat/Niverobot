@@ -20,9 +20,9 @@ namespace Niverobot.WebApi.Controllers
 
         // POST api/<controller>
         [HttpPost]
-        public IActionResult Post([FromBody]string request)
+        public IActionResult Post()
         {
-            return Ok(request);
+            return Ok("Hello post!");
         }
 
         // PUT api/<controller>/5
