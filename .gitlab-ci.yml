@@ -9,9 +9,9 @@ stages:
     - deploy
 
 build:
-image: docker:19.03.1
-services:
-  - docker:19.03.1-dind
+  image: docker:19.03.1
+  services:
+    - docker:19.03.1-dind
   before_script:
     - cd Nivero
   script:
@@ -23,7 +23,7 @@ services:
 release:
   image: docker:19.03.1
   services:
-  - docker:19.03.1-dind
+    - docker:19.03.1-dind
   only:
     - master
   before_script:
