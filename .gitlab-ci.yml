@@ -20,21 +20,21 @@ stages:
 #   except:
 #     - master
 
-# release:
-#   image: docker:19.03.1
-#   services:
-#   - docker:19.03.1-dind
-#   # only:
-#   #   - master
-#   before_script:
-#     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-#     - cd Niverobot
-#   script:
-#     - docker build -t $CI_REGISTRY/niverhawk/$IMAGE_NAME -f Niverobot.WebApi/Dockerfile .
-#     - docker push $CI_REGISTRY/niverhawk/$IMAGE_NAME
-#   after_script:
-#     - docker logout $CI_REGISTRY
-#   stage: release
+release:
+  image: docker:19.03.1
+  services:
+  - docker:19.03.1-dind
+  # only:
+  #   - master
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - cd Niverobot
+  script:
+    - docker build -t $CI_REGISTRY/niverhawk/$IMAGE_NAME -f Niverobot.WebApi/Dockerfile .
+    - docker push $CI_REGISTRY/niverhawk/$IMAGE_NAME
+  after_script:
+    - docker logout $CI_REGISTRY
+  stage: release
 
 deploy:
   image: ubuntu:latest
