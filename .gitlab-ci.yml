@@ -31,7 +31,8 @@ release:
     - docker login -u $GITLAB_USER_NAME -p $ACCESS_TOKEN $CI_REGISTRY
     - cd Niverobot
   script:
-    - docker build -t $CI_REGISTRY/$REGISTRY_USER/$IMAGE_NAME -f Niverobot.WebApi/Dockerfile .
+    - echo $CI_COMMIT_REF_NAME
+    - docker build -t $CI_REGISTRY/$REGISTRY_USER/$IMAGE_NAME:$CI_COMMIT_REF_NAME -f Niverobot.WebApi/Dockerfile .
     - docker push $CI_REGISTRY/$REGISTRY_USER/$IMAGE_NAME:$CI_COMMIT_REF_NAME
   after_script:
     - docker logout $CI_REGISTRY
