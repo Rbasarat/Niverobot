@@ -2,45 +2,50 @@ variables:
   # Use TLS https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled
   DOCKER_TLS_CERTDIR: "/certs"
   IMAGE_NAME: niverobot
-  REGISTRY_USER: niverhawk
 
 stages:
-    # - build
+    - build
     - release
     - deploy
 
-# build:
-#   image: docker:19.03.1
-#   services:
-#     - docker:19.03.1-dind
-#   before_script:
-#     - cd Niverobot
-#   script:
-#     - docker build -t $CI_REGISTRY/niverhawk/$IMAGE_NAME -f Niverobot.WebApi/Dockerfile .
-#   stage: build
-#   except:
-#     - master
+build:
+  image: docker:19.03.1
+  services:
+    - docker:19.03.1-dind
+  before_script:
+    - cd Niverobot
+  script:
+    - docker build -t $CI_REGISTRY/niverhawk/$IMAGE_NAME -f Niverobot.WebApi/Dockerfile .
+  stage: build
+  except:
+    - master
+    - tags
+    - release/*
+  except:
+    changes:
+        - CHANGELOG.md
+        - README.md
 
 release:
   image: docker:19.03.1
   services:
     - docker:19.03.1-dind
-  # only:
-  #   - master
+  only:
+    - master
   before_script:
-    - docker login -u $GITLAB_USER_NAME -p $ACCESS_TOKEN $CI_REGISTRY
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - cd Niverobot
   script:
-    - docker build -t $CI_REGISTRY/$REGISTRY_USER/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA -f Niverobot.WebApi/Dockerfile .
-    - docker push $CI_REGISTRY/$REGISTRY_USER/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA
+    - docker build -t $CI_REGISTRY/$CI_REGISTRY_USER/$IMAGE_NAME -f Niverobot.WebApi/Dockerfile .
+    - docker push $CI_REGISTRY/$CI_REGISTRY_USER/$IMAGE_NAME
   after_script:
     - docker logout $CI_REGISTRY
   stage: release
 
 deploy:
   image: ubuntu:latest
-  # only:
-  #   - master
+  only:
+    - master
   stage: deploy
   before_script:
   - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
@@ -51,8 +56,8 @@ deploy:
   - chmod 644 ~/.ssh/known_hosts
 
   script:
-    - ssh niverhawk@51.83.74.19 docker login -u $GITLAB_USER_NAME -p $ACCESS_TOKEN $CI_REGISTRY
-    - ssh niverhawk@51.83.74.19 docker pull $CI_REGISTRY/$REGISTRY_USER/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA
+    - ssh niverhawk@51.83.74.19 docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - ssh niverhawk@51.83.74.19 docker pull $CI_REGISTRY/niverhawk/$IMAGE_NAME:CI_COMMIT_REF_NAME
     - ssh niverhawk@51.83.74.19 docker stop niverobot 
     - ssh niverhawk@51.83.74.19 docker rm niverobot 
     - ssh niverhawk@51.83.74.19 docker run -d -e BotConfiguration__BotToken=$BOT_TOKEN -p 5000:80 --name niverobot -v /home/niverhawk/niverobot:/app/Logs $CI_REGISTRY/niverhawk/$IMAGE_NAME
