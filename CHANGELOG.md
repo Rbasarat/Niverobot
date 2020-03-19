@@ -10,6 +10,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
 ### Fixed
 
+## V1.0.1
+ 
+### Added
+- Tagging on registry images
+### Changed
+
+### Fixed
+- Gitlab ci registry login
+
 ## V1.0.0
  
 ### Added
