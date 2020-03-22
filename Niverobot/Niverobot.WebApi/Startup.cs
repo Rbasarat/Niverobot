@@ -1,9 +1,11 @@
 using Domain;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Niverobot.Domain.EfModels;
 using Niverobot.WebApi.Interfaces;
 using Niverobot.WebApi.Services;
 
@@ -22,13 +24,24 @@ namespace Niverobot.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            //services.AddDbContextPool<NiveroBotContext>(options =>
+            //    options.UseSqlServer(Configuration.GetConnectionString("SqlServer")));
+
             services.AddMvc().AddNewtonsoftJson();
 
             services.AddScoped<ITelegramUpdateService, TelegramUpdateService>();
+
             services.AddSingleton<ITelegramBotService, TelegramBotService>();
             services.AddSingleton<IMessageService, MessageService>();
+            services.AddSingleton(Configuration);
+
             services.AddTransient<IDadJokeService, DadJokeService>();
+            services.AddTransient<IReminderService, ReminderService>();
+
             services.Configure<BotConfiguration>(Configuration.GetSection("BotConfiguration"));
+
+
 
         }
 

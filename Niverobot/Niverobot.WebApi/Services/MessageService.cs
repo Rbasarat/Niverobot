@@ -11,11 +11,13 @@ namespace Niverobot.WebApi.Services
     {
         private readonly ITelegramBotService _telegramBotService;
         private readonly IDadJokeService _dadJokeService;
+        private readonly IReminderService _reminderService;
 
-        public MessageService(ITelegramBotService telegramBotService, IDadJokeService dadJokeService)
+        public MessageService(ITelegramBotService telegramBotService, IDadJokeService dadJokeService, IReminderService reminderService)
         {
             _telegramBotService = telegramBotService;
             _dadJokeService = dadJokeService;
+            _reminderService = reminderService;
         }
 
         public async Task HandleTextMessageAsync(Update update)
@@ -32,6 +34,11 @@ namespace Niverobot.WebApi.Services
                         chatId: message.Chat.Id,
                         text: joke
                     );
+                    break;
+                case ".reminder":
+                    Log.Information("received reminder with chat id:{0}", message.Chat.Id);
+                    _reminderService.SetReminderAsync(update);
+
                     break;
                 case ".niverhelp":
 
