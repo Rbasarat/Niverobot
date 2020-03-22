@@ -51,8 +51,8 @@ deploy:
   - chmod 644 ~/.ssh/known_hosts
 
   script:
-    - ssh deployment@51.83.74.19 docker login -u $GITLAB_USER_NAME -p $ACCESS_TOKEN $CI_REGISTRY
-    - ssh deployment@51.83.74.19 docker pull $CI_REGISTRY/$REGISTRY_USER/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA
-    - ssh deployment@51.83.74.19 docker stop niverobot 
-    - ssh deployment@51.83.74.19 docker rm niverobot 
-    - ssh deployment@51.83.74.19 docker run -d -e BotConfiguration__BotToken=$BOT_TOKEN -p 5000:80 --name niverobot -v /home/niverhawk/niverobot:/app/Logs $CI_REGISTRY/niverhawk/$IMAGE_NAME
+    - ssh deployer@51.83.74.19 docker login -u $GITLAB_USER_NAME -p $ACCESS_TOKEN $CI_REGISTRY
+    - ssh deployer@51.83.74.19 docker pull $CI_REGISTRY/$REGISTRY_USER/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA
+    - ssh deployer@51.83.74.19 docker stop niverobot 
+    - ssh deployer@51.83.74.19 docker rm niverobot 
+    - ssh deployer@51.83.74.19 docker run -d -e BotConfiguration__BotToken=$BOT_TOKEN -p 5000:80 --name niverobot -v /home/niverhawk/niverobot:/app/Logs $CI_REGISTRY/niverhawk/$IMAGE_NAME
