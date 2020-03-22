@@ -5,17 +5,20 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ## NEXT
  
 ### Added
-
 ### Changed
-
 ### Fixed
 
+## v1.0.2
+ 
+### Added
+### Changed
+- Changed deployment user on vps
+### Fixed
 ## V1.0.1
  
 ### Added
 - Tagging on registry images
 ### Changed
-
 ### Fixed
 - Gitlab ci registry login
 
