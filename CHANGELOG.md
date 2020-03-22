@@ -2,11 +2,13 @@
 All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
-## NEXT
- 
+
+v1.0.3
 ### Added
 ### Changed
+- Changed deployment user to deployer
 ### Fixed
+## V1.0.1
 
 ## v1.0.2
  
