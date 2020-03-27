@@ -15,7 +15,7 @@ namespace Niverobot.Domain.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Message = table.Column<string>(nullable: true),
                     SenderUserName = table.Column<string>(nullable: true),
-                    Date = table.Column<DateTime>(nullable: false),
+                    TriggerDate = table.Column<DateTime>(nullable: false),
                     SenderId = table.Column<int>(nullable: false),
                     ReceiverId = table.Column<long>(nullable: false)
                 },
