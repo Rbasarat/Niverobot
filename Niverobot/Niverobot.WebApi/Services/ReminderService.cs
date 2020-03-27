@@ -39,21 +39,7 @@ namespace Niverobot.WebApi.Services
             }
             else
             {
-                var matches = Regex.Matches(update.Message.Text, MessagePattern);
-                if (matches.Count < 1)
-                {
-                    // TODO: centralize error handling
-                    await _telegramBotService.Client.SendTextMessageAsync(
-                        chatId: update.Message.Chat.Id,
-                        text: "Reminder format is not valid,\n" +
-                              "Use `.reminder -h` for help.",
-                        ParseMode.Markdown
-                    );
-                }
-                else
-                {
-                    await SetReminderAsync(update);
-                }
+                await SetReminderAsync(update);
             }
         }
 
@@ -79,42 +65,55 @@ namespace Niverobot.WebApi.Services
         private async Task SetReminderAsync(Update update)
         {
             // TODO: check for format of string.
-            try
-            {
-                var reminder = new Reminder
-                {
-                    SenderId = update.Message.From.Id,
-                    ReceiverId = update.Message.Chat.Id,
-                    SenderUserName = update.Message.From.Username
-                };
-
-                var command = update.Message.Text.Split(' ');
-                // Remove triggerword.
-                command = command.Skip(1).ToArray();
-
-                reminder.Message = command.First();
-
-                string triggerDate = command.Last();
-
-
-                _context.Reminders.Add(reminder);
-                _context.SaveChanges();
-
-
-                await _telegramBotService.Client.SendTextMessageAsync(
-                    chatId: update.Message.Chat.Id,
-                    text: "Reminder is set."
-                );
-            }
-            catch (Exception e)
+            // Remove triggerword from message
+            var message = update.Message.Text.Replace(".reminder ", "");
+            var groups = Regex.Matches(message, MessagePattern).FirstOrDefault()?.Groups;
+            
+            if (groups == null || groups.Count != 4)
             {
                 // TODO: centralize error handling
                 await _telegramBotService.Client.SendTextMessageAsync(
                     chatId: update.Message.Chat.Id,
-                    text: "Error setting reminder. Please try again."
+                    text: "Reminder format is not valid,\n" +
+                          "Use `.reminder -h` for help.",
+                    ParseMode.Markdown
                 );
-                Log.Error("Error setting reminder: {0}", e);
             }
+            else
+            {
+                // Remove firsts group.
+                var matches = groups.Values.Skip(1);
+                try
+                {
+                    var reminder = new Reminder
+                    {
+                        SenderId = update.Message.From.Id,
+                        ReceiverId = update.Message.Chat.Id,
+                        SenderUserName = update.Message.From.Username,
+                        Message = matches.First().Value
+                    };
+                    // TODO Call dateTime module and set triggerdate.
+                    
+                    // _context.Reminders.Add(reminder);
+                    // _context.SaveChanges();
+
+                    await _telegramBotService.Client.SendTextMessageAsync(
+                        chatId: update.Message.Chat.Id,
+                        text: "Reminder is set."
+                    );
+                }
+                catch (Exception e)
+                {
+                    // TODO: centralize error handling
+                    await _telegramBotService.Client.SendTextMessageAsync(
+                        chatId: update.Message.Chat.Id,
+                        text: "Error setting reminder. Please try again."
+                    );
+                    Log.Error("Error setting reminder: {0}", e);
+                }
+            }
+
+
         }
 
         private DateTime ConvertDurationToDateTime(string duration)
