@@ -37,13 +37,14 @@ namespace Niverobot.WebApi.Services
                     break;
                 case ".reminder":
                     Log.Information("received reminder with chat id:{0}", message.Chat.Id);
-                    _reminderService.SetReminderAsync(update);
+                    _reminderService.HandleReminderAsync(update);
 
                     break;
                 case ".niverhelp":
 
                     const string usage = "Usage:\n" +
-                        ".dadjoke   - Tells you a dadjoke\n";
+                        ".dadjoke - Tells you a dadjoke\n" +
+                        ".reminder - Set up a reminder. Use -h for more information. ";
 
                     await _telegramBotService.Client.SendTextMessageAsync(
                         chatId: message.Chat.Id,

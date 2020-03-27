@@ -8,6 +8,6 @@ namespace Niverobot.WebApi.Interfaces
 {
     public interface IReminderService
     {
-        Task SetReminderAsync(Update update);
+        Task HandleReminderAsync(Update update);
     }
 }

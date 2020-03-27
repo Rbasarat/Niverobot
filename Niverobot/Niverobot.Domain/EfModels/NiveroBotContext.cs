@@ -5,12 +5,9 @@ namespace Niverobot.Domain.EfModels
 {
     public class NiveroBotContext : DbContext
     {
-        private readonly IConfiguration Configuration;
-
-
-        public NiveroBotContext(IConfiguration configuration)
+        public NiveroBotContext(DbContextOptions<NiveroBotContext> options)
+            : base(options)
         {
-            Configuration = configuration;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -25,12 +25,8 @@ namespace Niverobot.WebApi
         {
             services.AddControllers();
 
-            //services.AddDbContextPool<NiveroBotContext>(options =>
-            //    options.UseSqlServer(Configuration.GetConnectionString("SqlServer")));
-
             services.AddMvc().AddNewtonsoftJson();
 
-            services.AddScoped<ITelegramUpdateService, TelegramUpdateService>();
 
             services.AddSingleton<ITelegramBotService, TelegramBotService>();
             services.AddSingleton<IMessageService, MessageService>();
@@ -38,11 +34,12 @@ namespace Niverobot.WebApi
 
             services.AddTransient<IDadJokeService, DadJokeService>();
             services.AddTransient<IReminderService, ReminderService>();
+            services.AddTransient<ITelegramUpdateService, TelegramUpdateService>();
 
             services.Configure<BotConfiguration>(Configuration.GetSection("BotConfiguration"));
 
-
-
+            services.AddDbContext<NiveroBotContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("SqlServer")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

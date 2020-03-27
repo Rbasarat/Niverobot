@@ -1,7 +1,5 @@
 using Niverobot.WebApi.Interfaces;
 using Serilog;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -10,12 +8,10 @@ namespace Niverobot.WebApi.Services
 {
     public class TelegramUpdateService : ITelegramUpdateService
     {
-        private readonly ITelegramBotService _botService;
         private readonly IMessageService _messageService;
 
-        public TelegramUpdateService(ITelegramBotService botService, IMessageService messageService)
+        public TelegramUpdateService(IMessageService messageService)
         {
-            _botService = botService;
             _messageService = messageService;
         }
 
