@@ -9,15 +9,7 @@ namespace Niverobot.Domain.EfModels
             : base(options)
         {
         }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(Configuration.GetConnectionString("SqlServer"));
-        }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-        }
+        
         public DbSet<Reminder> Reminders { get; set; }
 
 

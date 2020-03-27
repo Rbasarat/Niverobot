@@ -37,7 +37,7 @@ namespace Niverobot.WebApi.Services
                     break;
                 case ".reminder":
                     Log.Information("received reminder with chat id:{0}", message.Chat.Id);
-                    _reminderService.HandleReminderAsync(update);
+                    await _reminderService.HandleReminderAsync(update);
 
                     break;
                 case ".niverhelp":

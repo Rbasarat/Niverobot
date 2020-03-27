@@ -8,6 +8,8 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Serilog;
 using Telegram.Bot.Types;
 
 namespace Niverobot.WebApi.Services
@@ -45,7 +47,7 @@ namespace Niverobot.WebApi.Services
             }
             else
             {
-                SetReminderAsync(update);
+                await SetReminderAsync(update);
             }
         }
 
@@ -95,6 +97,7 @@ namespace Niverobot.WebApi.Services
                     chatId: update.Message.Chat.Id,
                     text: "Error setting reminder. Please try again."
                 );
+                Log.Error("Error setting reminder: {0}", e);
             }
         }
 
