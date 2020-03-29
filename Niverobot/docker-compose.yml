@@ -5,7 +5,7 @@ services:
     image: niverobot
     build:
       context: .
-      dockerfile: ./Niverobot.WebApi/Dockerfile
+      dockerfile: ./Niverobot.WebApi/Development.Dockerfile
     volumes:
       - ./Niverobot/Logs:/app/Logs
     ports: 
@@ -22,7 +22,7 @@ services:
     volumes:
       - ./Niverobot/Db:/sql
     environment:
-      SA_PASSWORD: "root!"
+      SA_PASSWORD: "ad6QVLqE@W"
       ACCEPT_EULA: "Y"
     ports:
       - "1433:1433"
