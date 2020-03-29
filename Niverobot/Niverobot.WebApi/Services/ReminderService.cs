@@ -32,10 +32,11 @@ namespace Niverobot.WebApi.Services
 
         public async Task HandleReminderAsync(Update update)
         {
-            var flag = update.Message.Text.Replace(".reminder", "");
-            if (flag.Contains("-h"))
+            // .reminders to show list of all reminders
+            // You can then edit your own reminders and delete them.
+            if (update.Message.Text.Contains("-h"))
             {
-                await SendHelpMessage(update);
+                await SendHelpMessage(update.Message.Chat.Id);
             }
             else
             {
@@ -43,13 +44,15 @@ namespace Niverobot.WebApi.Services
             }
         }
 
-        private async Task SendHelpMessage(Update update)
+        private async Task SendHelpMessage(long chatId)
         {
             // TODO: Reminder for someone else
             // TODO: Repeatable reminders
+            // TODO: .reminders to show list of all reminders
+            // TODO: You can then edit your own reminders and delete them.
 
             await _telegramBotService.Client.SendTextMessageAsync(
-                chatId: update.Message.Chat.Id,
+                chatId: chatId,
                 text: "Use .reminder to set a reminder for yourself or for a channel.\n" +
                       "Use the following format:\n *.reminder <message> on/in/at <time>*\n" +
                       "Some examples include:\n" +
