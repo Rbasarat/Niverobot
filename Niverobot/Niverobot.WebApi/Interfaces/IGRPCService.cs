@@ -1,7 +1,9 @@
-﻿namespace Niverobot.WebApi.Interfaces
+﻿using Dateparser;
+
+namespace Niverobot.WebApi.Interfaces
 {
     public interface IGRPCService
     {
-        string ParseDateTimeFromNl(string date);
+        ParseDateReply ParseDateTimeFromNl(string date);
     }
 }
