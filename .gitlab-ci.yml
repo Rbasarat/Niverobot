@@ -20,7 +20,8 @@ build:
     - docker build -t $CI_REGISTRY/niverhawk/dateparser -f Niverobot.Dateparser/Dockerfile .
   stage: build
   except:
-    - master
+    - master 
+
 
 release:
   image: docker:19.03.1
