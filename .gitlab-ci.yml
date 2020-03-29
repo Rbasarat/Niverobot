@@ -17,6 +17,7 @@ build:
     - cd Niverobot
   script:
     - docker build -t $CI_REGISTRY/niverhawk/$IMAGE_NAME -f Niverobot.WebApi/Dockerfile .
+    - docker build -t $CI_REGISTRY/niverhawk/Dateparser -f Niverobot.Dateparser/Dockerfile .
   stage: build
   except:
     - master
