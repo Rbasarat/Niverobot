@@ -16,9 +16,15 @@ class DateParser(dateparser_pb2_grpc.DateParserServicer):
     def ParseDate(self, request, context):
         date = search_dates(request.NaturalDate, settings={
                             'RETURN_AS_TIMEZONE_AWARE': True, 'RETURN_TIME_AS_PERIOD': True})
+        return self.CreateResponse(date)
+
+    def CreateResponse(self, date):
         timestamp = Timestamp()
-        timestamp.FromDatetime((date[0][1]))
-        return dateparser_pb2.ParseDateReply(ParsedDate=timestamp, Offset=date[0][1].utcoffset().total_seconds())
+        if date is not None:
+            timestamp.FromDatetime((date[0][1]))
+            return dateparser_pb2.ParseDateReply(ParsedDate=timestamp, Offset=date[0][1].utcoffset().total_seconds())
+        else:
+            return dateparser_pb2.ParseDateReply(ParsedDate=timestamp, Offset=0)
 
 
 def serve():
@@ -32,5 +38,3 @@ def serve():
 if __name__ == '__main__':
     logging.basicConfig()
     serve()
-
-# , 'PREFER_DATES_FROM': 'future'
