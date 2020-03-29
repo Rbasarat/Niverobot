@@ -5,9 +5,9 @@ variables:
   REGISTRY_USER: niverhawk
 
 stages:
-    - build
-    - release
-    - deploy
+  - build
+  - release
+  - deploy
 
 build:
   image: docker:19.03.1
@@ -44,21 +44,21 @@ deploy:
     - master
   stage: deploy
   before_script:
-  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
-  - eval $(ssh-agent -s)
-  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
-  - mkdir -p ~/.ssh && touch ~/.ssh/known_hosts
-  - ssh-keyscan -t rsa 51.83.74.19 > ~/.ssh/known_hosts
-  - chmod 644 ~/.ssh/known_hosts
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - mkdir -p ~/.ssh && touch ~/.ssh/known_hosts
+    - ssh-keyscan -t rsa 51.83.74.19 > ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
 
   script:
     - ssh deployer@51.83.74.19 docker login -u $GITLAB_USER_NAME -p $ACCESS_TOKEN $CI_REGISTRY
     - ssh deployer@51.83.74.19 docker pull $CI_REGISTRY/$REGISTRY_USER/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA
-    - ssh deployer@51.83.74.19 docker stop niverobot 
-    - ssh deployer@51.83.74.19 docker rm niverobot 
+    - ssh deployer@51.83.74.19 docker stop niverobot
+    - ssh deployer@51.83.74.19 docker rm niverobot
     - ssh deployer@51.83.74.19 docker run -d \
-    -e BotConfiguration__BotToken=$BOT_TOKEN \
-    -e ConnectionStrings__SqlServer=$CONNECTION_STRING_NIVEROBOT \
-    -p 5000:80 \
-    --name niverobot \
-    -v /home/niverhawk/niverobot/Logs:/app/Logs $CI_REGISTRY/niverhawk/$IMAGE_NAME \
+      -e BotConfiguration__BotToken=$BOT_TOKEN \
+      -e ConnectionStrings__SqlServer=$CONNECTION_STRING_NIVEROBOT \
+      -p 5000:80 \
+      --name niverobot \
+      -v /home/niverhawk/niverobot/Logs:/app/Logs $CI_REGISTRY/niverhawk/$IMAGE_NAME \
