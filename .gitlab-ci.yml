@@ -19,8 +19,8 @@ build:
     - docker build -t $CI_REGISTRY/niverhawk/$IMAGE_NAME -f Niverobot.WebApi/Dockerfile .
     - docker build -t $CI_REGISTRY/niverhawk/dateparser -f Niverobot.Dateparser/Dockerfile .
   stage: build
-  except:
-    - master
+#  except:
+#    - master
 
 release:
   image: docker:19.03.1
