@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: ./Niverobot.WebApi/Development.Dockerfile
     volumes:
-      - ./Niverobot/Logs:/app/Logs
+      - ./Logs:/app/Logs
     ports: 
       - 5000:80
     depends_on:
@@ -18,7 +18,7 @@ services:
   Niverobot.SQL:
     image: "mcr.microsoft.com/mssql/server:2019-latest"
     volumes:
-      - ./Niverobot/Db:/sql
+      - ./Db:/sql
     environment:
       SA_PASSWORD: "ad6QVLqE@W"
       ACCEPT_EULA: "Y"

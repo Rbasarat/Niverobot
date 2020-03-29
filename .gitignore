@@ -33,6 +33,11 @@ msbuild.wrn
 # Visual Studio 2015
 .vs/
 
+#vscode
+.vscode/
+
+#python venv
+venv/
 # Logging
 Logs
 
