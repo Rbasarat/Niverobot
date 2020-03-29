@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Niverobot.WebApi", "Niverob
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Niverobot.Domain", "Niverobot.Domain\Niverobot.Domain.csproj", "{31A01D49-B809-4527-9919-9011E1871D6A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Niverobot.Protos", "Niverobot.Protos\Niverobot.Protos.csproj", "{732E226B-3E8E-43A2-ACFC-D7C047C62562}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{31A01D49-B809-4527-9919-9011E1871D6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31A01D49-B809-4527-9919-9011E1871D6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31A01D49-B809-4527-9919-9011E1871D6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{732E226B-3E8E-43A2-ACFC-D7C047C62562}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{732E226B-3E8E-43A2-ACFC-D7C047C62562}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{732E226B-3E8E-43A2-ACFC-D7C047C62562}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{732E226B-3E8E-43A2-ACFC-D7C047C62562}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

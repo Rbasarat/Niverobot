@@ -6,19 +6,18 @@ import grpc
 import dateparser_pb2
 import dateparser_pb2_grpc
 
-# TODO: error handling
-
-
-class DataParser(dateparser_pb2_grpc.DateparserServicer):
+#TODO: Error handling
+#TODO: Add logging
+class DateParser(dateparser_pb2_grpc.DateParserServicer):
 
     def ParseDate(self, request, context):
-        return dateparser_pb2.NaturalDateResponse(dateTime='Hello, %s!' % request.naturalDate)
+        return dateparser_pb2.ParseDateReply(ParsedDate='Hello, %s!' % request.NaturalDate)
 
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    dateparser_pb2_grpc.add_DateparserServicer_to_server(DataParser(), server)
-    server.add_insecure_port('[::]:50051')
+    dateparser_pb2_grpc.add_DateParserServicer_to_server(DateParser(), server)
+    server.add_insecure_port('[::]:80')
     server.start()
     server.wait_for_termination()
 

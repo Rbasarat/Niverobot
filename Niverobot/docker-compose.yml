@@ -22,5 +22,11 @@ services:
     environment:
       SA_PASSWORD: "ad6QVLqE@W"
       ACCEPT_EULA: "Y"
+      
+  Niverobot.Dateparser:
+    image: dateparser
+    build: 
+      context: .
+      dockerfile: ./Niverobot.Dateparser/Dockerfile
     ports:
-      - "1433:1433"
+      - "3001:80"

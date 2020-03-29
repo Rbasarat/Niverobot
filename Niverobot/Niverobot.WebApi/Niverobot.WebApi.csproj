@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Niverobot.Domain\Niverobot.Domain.csproj" />
+    <ProjectReference Include="..\Niverobot.Protos\Niverobot.Protos.csproj" />
   </ItemGroup>
 
 </Project>

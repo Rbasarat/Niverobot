@@ -29,11 +29,13 @@ namespace Niverobot.WebApi
 
 
             services.AddSingleton<ITelegramBotService, TelegramBotService>();
-            services.AddScoped<IMessageService, MessageService>();
+            services.AddScoped<IMessageService, MessageService>();            
+            services.AddScoped<IDadJokeService, DadJokeService>();
+            services.AddScoped<IReminderService, ReminderService>();
+            services.AddScoped<IGRPCService, GrpcService>();
             services.AddSingleton(Configuration);
 
-            services.AddTransient<IDadJokeService, DadJokeService>();
-            services.AddTransient<IReminderService, ReminderService>();
+
             services.AddTransient<ITelegramUpdateService, TelegramUpdateService>();
 
             services.Configure<BotConfiguration>(Configuration.GetSection("BotConfiguration"));

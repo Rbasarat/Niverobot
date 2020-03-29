@@ -8,14 +8,11 @@ import dateparser_pb2_grpc
 
 
 def run():
-    # NOTE(gRPC Python Team): .close() is possible on a channel and should be
-    # used in circumstances in which the with statement does not fit the needs
-    # of the code.
-    with grpc.insecure_channel('localhost:50051') as channel:
-        stub = dateparser_pb2_grpc.DateparserStub(channel)
+    with grpc.insecure_channel('localhost:3001') as channel:
+        stub = dateparser_pb2_grpc.DateParserStub(channel)
         response = stub.ParseDate(
-            dateparser_pb2.NaturalDateRequest(naturalDate='you'))
-    print("Greeter client received: " + response.message)
+            dateparser_pb2.ParseDateRequest(NaturalDate='you'))
+    print("Greeter client received: " + response.ParsedDate)
 
 
 if __name__ == '__main__':

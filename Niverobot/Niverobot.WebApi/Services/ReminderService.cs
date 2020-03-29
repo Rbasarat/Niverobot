@@ -22,12 +22,12 @@ namespace Niverobot.WebApi.Services
         private const string MessagePattern = @"(.*)\b(in|on|at)\b\s+(.*)";
         private RegexOptions options = RegexOptions.Multiline;
         private readonly ITelegramBotService _telegramBotService;
-        private readonly NiveroBotContext _context;
+        private readonly IGRPCService _grpcService;
 
-        public ReminderService(ITelegramBotService telegramBotService, NiveroBotContext context)
+        public ReminderService(ITelegramBotService telegramBotService, IGRPCService grpcService)
         {
             _telegramBotService = telegramBotService;
-            _context = context;
+            _grpcService = grpcService;
         }
 
         public async Task HandleReminderAsync(Update update)
@@ -96,7 +96,7 @@ namespace Niverobot.WebApi.Services
                         Message = matches.First().Value
                     };
                     // TODO Call dateTime module and set triggerdate.
-                    
+                    var date = _grpcService.ParseDateTimeFromNl("joehoe");
                     // _context.Reminders.Add(reminder);
                     // _context.SaveChanges();
 
