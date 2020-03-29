@@ -21,7 +21,7 @@ namespace Niverobot.WebApi.Controllers
         public async Task<IActionResult> Post([FromBody]Update update)
         {
             await _updateService.EchoAsync(update);
-            return Ok();
+            return Ok(); 
         }
     }
 }
