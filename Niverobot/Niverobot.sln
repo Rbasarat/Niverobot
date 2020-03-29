@@ -8,6 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OtherFiles", "OtherFiles", 
 		..\.gitlab-ci.yml = ..\.gitlab-ci.yml
 		..\CHANGELOG.md = ..\CHANGELOG.md
 		..\README.md = ..\README.md
+		docker-compose.yml = docker-compose.yml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Niverobot.WebApi", "Niverobot.WebApi\Niverobot.WebApi.csproj", "{F2DFF3D3-DCC3-482F-B281-6CDE912BA7AF}"
