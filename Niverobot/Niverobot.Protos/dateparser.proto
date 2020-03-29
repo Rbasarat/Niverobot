@@ -1,4 +1,5 @@
 syntax = "proto3";
+import "google/protobuf/timestamp.proto";
 
 option java_multiple_files = true;
 option java_package = "io.grpc.examples.helloworld";
@@ -19,5 +20,6 @@ message ParseDateRequest {
 
 // Response message for parsing date
 message ParseDateReply {
-  string ParsedDate = 1;
+  google.protobuf.Timestamp ParsedDate = 1;
+  float Offset = 2;
 }
