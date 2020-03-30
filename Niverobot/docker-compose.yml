@@ -33,3 +33,10 @@ services:
     build: 
       context: .
       dockerfile: ./Niverobot.Dateparser/Dockerfile
+
+  Niverobot.Consumer:
+    image: consumer
+    container_name: consumer
+    build:
+      context: .
+      dockerfile: ./Niverobot.Consumer/Dockerfile
