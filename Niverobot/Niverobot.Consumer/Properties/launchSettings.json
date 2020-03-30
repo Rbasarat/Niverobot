@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Niverobot.Consumer": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}
