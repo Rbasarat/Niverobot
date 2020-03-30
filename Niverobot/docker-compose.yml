@@ -33,5 +33,3 @@ services:
     build: 
       context: .
       dockerfile: ./Niverobot.Dateparser/Dockerfile
-    ports:
-      - "3001:50051"
