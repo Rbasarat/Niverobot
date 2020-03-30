@@ -9,6 +9,8 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY ["Niverobot.WebApi/Niverobot.WebApi.csproj", "Niverobot.WebApi/"]
 COPY ["Niverobot.Domain/Niverobot.Domain.csproj", "Niverobot.Domain/"]
+COPY ["Niverobot.Interfaces/Niverobot.Interfaces.csproj", "Niverobot.Interfaces/"]
+COPY ["Niverobot.Services/Niverobot.Services.csproj", "Niverobot.Services/"]
 RUN dotnet restore "Niverobot.WebApi/Niverobot.WebApi.csproj"
 COPY . .
 WORKDIR "/src/Niverobot.WebApi"

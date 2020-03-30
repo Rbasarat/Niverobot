@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Niverobot.WebApi.Interfaces;
+using Niverobot.Interfaces;
 using Telegram.Bot.Types;
 
 namespace Niverobot.WebApi.Controllers

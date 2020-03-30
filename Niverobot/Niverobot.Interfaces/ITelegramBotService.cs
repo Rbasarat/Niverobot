@@ -1,6 +1,6 @@
 ﻿using Telegram.Bot;
 
-namespace Niverobot.WebApi.Interfaces
+namespace Niverobot.Interfaces
 {
     public interface ITelegramBotService
     {

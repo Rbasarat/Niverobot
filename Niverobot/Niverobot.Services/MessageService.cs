@@ -1,11 +1,11 @@
-﻿using Niverobot.WebApi.Interfaces;
-using Serilog;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using Niverobot.Interfaces;
+using Serilog;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 
-namespace Niverobot.WebApi.Services
+namespace Niverobot.Services
 {
     public class MessageService : IMessageService
     {

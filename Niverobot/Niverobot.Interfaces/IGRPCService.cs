@@ -1,6 +1,6 @@
 ﻿using Dateparser;
 
-namespace Niverobot.WebApi.Interfaces
+namespace Niverobot.Interfaces
 {
     public interface IGRPCService
     {

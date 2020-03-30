@@ -1,13 +1,13 @@
-﻿using Microsoft.Extensions.Configuration;
-using Niverobot.WebApi.Interfaces;
+﻿using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Text.Json;
+using System.Threading.Tasks;
 using Domain;
+using Niverobot.Interfaces;
+using Microsoft.Extensions.Configuration;
 using Serilog;
-using System.Net;
 
-namespace Niverobot.WebApi.Services
+namespace Niverobot.Services
 {
     public class DadJokeService : IDadJokeService
     {

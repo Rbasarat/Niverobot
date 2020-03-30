@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Telegram.Bot.Types;
 
-namespace Niverobot.WebApi.Interfaces
+namespace Niverobot.Interfaces
 {
     public interface ITelegramUpdateService
     {

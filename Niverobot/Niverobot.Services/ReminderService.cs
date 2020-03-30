@@ -1,14 +1,11 @@
-﻿using Niverobot.Domain.EfModels;
-using Niverobot.WebApi.Interfaces;
-using System;
-using System.Linq;
-using System.Text.RegularExpressions;
+﻿using System;
 using System.Threading.Tasks;
+using Niverobot.Domain.EfModels;
+using Niverobot.Interfaces;
 using Serilog;
 using Telegram.Bot.Types;
-using Telegram.Bot.Types.Enums;
 
-namespace Niverobot.WebApi.Services
+namespace Niverobot.Services
 {
     public class ReminderService : IReminderService
     {
@@ -74,27 +71,29 @@ namespace Niverobot.WebApi.Services
                     );
                     Log.Error("Error setting parsing date: {0}", update.Message);
                 }
-
-                var parsedDateTime = response.ParsedDate.ToDateTime();
-                var utcTime = parsedDateTime.AddSeconds(response.Offset);
-                
-                var reminder = new Reminder
+                else
                 {
-                    SenderId = update.Message.From.Id,
-                    ReceiverId = update.Message.Chat.Id,
-                    SenderUserName = update.Message.From.Username ?? update.Message.From.FirstName,
-                    // Remove trigger word and time from message
-                    Message = update.Message.Text.Replace(".reminder ", "").Replace(response.Date, ""),
-                    TriggerDate = utcTime
-                };
+                    var parsedDateTime = response.ParsedDate.ToDateTime();
+                    var utcTime = parsedDateTime.AddSeconds(response.Offset);
+                
+                    var reminder = new Reminder
+                    {
+                        SenderId = update.Message.From.Id,
+                        ReceiverId = update.Message.Chat.Id,
+                        SenderUserName = update.Message.From.Username ?? update.Message.From.FirstName,
+                        // Remove trigger word and time from message
+                        Message = update.Message.Text.Replace(".reminder ", "").Replace(response.Date, ""),
+                        TriggerDate = utcTime
+                    };
 
-                _context.Reminders.Add(reminder);
-                _context.SaveChanges();
+                    _context.Reminders.Add(reminder);
+                    _context.SaveChanges();
 
-                await _telegramBotService.Client.SendTextMessageAsync(
-                    chatId: update.Message.Chat.Id,
-                    text: "Reminder is set."
-                );
+                    await _telegramBotService.Client.SendTextMessageAsync(
+                        chatId: update.Message.Chat.Id,
+                        text: "Reminder is set."
+                    );
+                }
             }
             catch (Exception e)
             {

@@ -6,8 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Niverobot.Domain.EfModels;
-using Niverobot.WebApi.Interfaces;
-using Niverobot.WebApi.Services;
+using Niverobot.Interfaces;
+using Niverobot.Services;
 
 namespace Niverobot.WebApi
 {

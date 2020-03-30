@@ -1,9 +1,9 @@
-﻿using Niverobot.WebApi.Interfaces;
+﻿using Dateparser;
 using Grpc.Core;
-using Dateparser;
+using Niverobot.Interfaces;
 using Microsoft.Extensions.Configuration;
 
-namespace Niverobot.WebApi.Services
+namespace Niverobot.Services
 {
     public class GrpcService : IGRPCService
     {
