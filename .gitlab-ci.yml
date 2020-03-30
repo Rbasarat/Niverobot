@@ -1,7 +1,6 @@
 variables:
   # Use TLS https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled
   DOCKER_TLS_CERTDIR: "/certs"
-  IMAGE_NAME: niverobot
   REGISTRY_USER: niverhawk
 
 stages:
@@ -33,8 +32,10 @@ release:
     - docker login -u $GITLAB_USER_NAME -p $ACCESS_TOKEN $CI_REGISTRY
     - cd Niverobot
   script:
-    - docker build -t $CI_REGISTRY/$REGISTRY_USER/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA -f Niverobot.WebApi/Dockerfile .
-    - docker push $CI_REGISTRY/$REGISTRY_USER/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA
+    - docker build -t $CI_REGISTRY/$REGISTRY_USER/niverobot:$CI_COMMIT_SHORT_SHA -f Niverobot.WebApi/Dockerfile .
+    - docker push $CI_REGISTRY/$REGISTRY_USER/niverobot:$CI_COMMIT_SHORT_SHA
+    - docker build -t $CI_REGISTRY/$REGISTRY_USER/dateparser:$CI_COMMIT_SHORT_SHA -f Niverobot.DateParser/Dockerfile .
+    - docker push $CI_REGISTRY/$REGISTRY_USER/dateparser:$CI_COMMIT_SHORT_SHA
   after_script:
     - docker logout $CI_REGISTRY
   stage: release
@@ -54,12 +55,14 @@ deploy:
 
   script:
     - ssh deployer@51.83.74.19 docker login -u $GITLAB_USER_NAME -p $ACCESS_TOKEN $CI_REGISTRY
-    - ssh deployer@51.83.74.19 docker pull $CI_REGISTRY/$REGISTRY_USER/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA
-    - ssh deployer@51.83.74.19 docker stop niverobot
-    - ssh deployer@51.83.74.19 docker rm niverobot
+    - ssh deployer@51.83.74.19 docker pull $CI_REGISTRY/$REGISTRY_USER/niverobot:$CI_COMMIT_SHORT_SHA
+    - ssh deployer@51.83.74.19 docker pull $CI_REGISTRY/$REGISTRY_USER/dateparser:$CI_COMMIT_SHORT_SHA
+    - ssh deployer@51.83.74.19 docker stop niverobot dateparser
+    - ssh deployer@51.83.74.19 docker rm niverobot dateparser
     - ssh deployer@51.83.74.19 docker run -d \
       -e BotConfiguration__BotToken=$BOT_TOKEN \
       -e ConnectionStrings__SqlServer=$CONNECTION_STRING_NIVEROBOT \
       -p 5000:80 \
       --name niverobot \
       -v /home/niverhawk/niverobot/Logs:/app/Logs $CI_REGISTRY/niverhawk/$IMAGE_NAME \
+    - ssh deployer@51.83.74.19 docker run -d --name dateparser
