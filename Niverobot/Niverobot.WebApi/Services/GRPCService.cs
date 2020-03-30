@@ -1,25 +1,31 @@
-﻿using System;
-using Niverobot.WebApi.Interfaces;
+﻿using Niverobot.WebApi.Interfaces;
 using Grpc.Core;
 using Dateparser;
+using Microsoft.Extensions.Configuration;
 
 namespace Niverobot.WebApi.Services
 {
     public class GrpcService : IGRPCService
     {
-        public string ParseDateTimeFromNl(string date)
+        private readonly IConfiguration _config;
+
+        public GrpcService(IConfiguration config)
+        {
+            _config = config;
+        }
+
+        public ParseDateReply ParseDateTimeFromNl(string date)
         {
             // TODO: add config. + Change to containerized address.
-            Channel channel = new Channel("127.0.0.1:3001", ChannelCredentials.Insecure);
+            Channel channel = new Channel(_config.GetConnectionString("DateParser"), ChannelCredentials.Insecure);
 
             var client = new DateParser.DateParserClient(channel);
 
             var reply = client.ParseDate(new ParseDateRequest{NaturalDate = date});
-            var response = reply.ParsedDate;
 
             channel.ShutdownAsync().Wait();
 
-            return response;
+            return reply;
         }
     }
 }

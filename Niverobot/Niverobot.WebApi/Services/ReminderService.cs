@@ -1,14 +1,9 @@
-﻿using GeoTimeZone;
-using Microsoft.Extensions.Configuration;
-using Niverobot.Domain.EfModels;
+﻿using Niverobot.Domain.EfModels;
 using Niverobot.WebApi.Interfaces;
-using NodaTime;
-using NodaTime.TimeZones;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using Serilog;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -17,17 +12,16 @@ namespace Niverobot.WebApi.Services
 {
     public class ReminderService : IReminderService
     {
-        private const string DurationPattern = @"\d+|\D+";
-
         private const string MessagePattern = @"(.*)\b(in|on|at)\b\s+(.*)";
-        private RegexOptions options = RegexOptions.Multiline;
         private readonly ITelegramBotService _telegramBotService;
         private readonly IGRPCService _grpcService;
+        private readonly NiveroBotContext _context;
 
-        public ReminderService(ITelegramBotService telegramBotService, IGRPCService grpcService)
+        public ReminderService(ITelegramBotService telegramBotService, IGRPCService grpcService, NiveroBotContext context)
         {
             _telegramBotService = telegramBotService;
             _grpcService = grpcService;
+            _context = context;
         }
 
         public async Task HandleReminderAsync(Update update)
@@ -50,11 +44,12 @@ namespace Niverobot.WebApi.Services
             // TODO: Repeatable reminders
             // TODO: .reminders to show list of all reminders
             // TODO: You can then edit your own reminders and delete them.
+            //TODO: maybe fix tomorrow?
 
             await _telegramBotService.Client.SendTextMessageAsync(
                 chatId: chatId,
                 text: "Use .reminder to set a reminder for yourself or for a channel.\n" +
-                      "Use the following format:\n *.reminder <message> on/in/at <time>*\n" +
+                      "Use the following format:\n `.reminder <message> *on/in/at* <time>`\n" +
                       "Some examples include:\n" +
                       "`.reminder drink water at 3pm`\n" +
                       "`.reminder wish Linda happy birthday on June 1st`\n" +
@@ -77,7 +72,7 @@ namespace Niverobot.WebApi.Services
                 // TODO: centralize error handling
                 await _telegramBotService.Client.SendTextMessageAsync(
                     chatId: update.Message.Chat.Id,
-                    text: "Reminder format is not valid,\n" +
+                    text: "Your format is not valid,\n" +
                           "Use `.reminder -h` for help.",
                     ParseMode.Markdown
                 );
@@ -88,17 +83,34 @@ namespace Niverobot.WebApi.Services
                 var matches = groups.Values.Skip(1);
                 try
                 {
+
+                    // TODO Call dateTime module and set trigger date.
+                    var response = _grpcService.ParseDateTimeFromNl(update.Message.Text);
+
+                    if (response.ParsedDate.Seconds <= 1)
+                    {
+                        // TODO centralize error handling
+                        await _telegramBotService.Client.SendTextMessageAsync(
+                            chatId: update.Message.Chat.Id,
+                            text: "Sorry i did not understand your date."
+                        );
+                        Log.Error("Error setting parsing date: {0}", matches.Last().Value);
+                    }
+
+                    var parsedDateTime = response.ParsedDate.ToDateTime();
+                    var utcTime = parsedDateTime.AddSeconds(response.Offset);
+                    
                     var reminder = new Reminder
                     {
                         SenderId = update.Message.From.Id,
                         ReceiverId = update.Message.Chat.Id,
                         SenderUserName = update.Message.From.Username,
-                        Message = matches.First().Value
+                        Message = matches.First().Value,
+                        TriggerDate = utcTime
                     };
-                    // TODO Call dateTime module and set triggerdate.
-                    var date = _grpcService.ParseDateTimeFromNl("joehoe");
-                    // _context.Reminders.Add(reminder);
-                    // _context.SaveChanges();
+                    
+                    _context.Reminders.Add(reminder);
+                    _context.SaveChanges();
 
                     await _telegramBotService.Client.SendTextMessageAsync(
                         chatId: update.Message.Chat.Id,
@@ -115,39 +127,6 @@ namespace Niverobot.WebApi.Services
                     Log.Error("Error setting reminder: {0}", e);
                 }
             }
-
-
-        }
-
-        private DateTime ConvertDurationToDateTime(string duration)
-        {
-            var matches = Regex.Matches(duration, DurationPattern, options);
-            switch (matches[1].Value)
-            {
-                case "m":
-                    return DateTime.Now.AddMinutes(Double.Parse(matches[0].Value));
-                case "h":
-                    return DateTime.Now.AddHours(Double.Parse(matches[0].Value));
-                case "d":
-                    return DateTime.Now.AddDays(Double.Parse(matches[0].Value));
-                case "M":
-                    return DateTime.Now.AddMonths(int.Parse(matches[0].Value));
-                case "y":
-                    return DateTime.Now.AddYears(int.Parse(matches[0].Value));
-                default:
-                    // TODO throw error.
-                    return DateTime.Now;
-            }
-        }
-
-        private TzdbZoneLocation GetTimeZoneFromLatLong(double latitude, double longitude)
-        {
-            var zoneLocations = TzdbDateTimeZoneSource.Default.ZoneLocations;
-            if (zoneLocations == null) return null;
-
-            var tz = TimeZoneLookup.GetTimeZone(latitude, longitude).Result.ToLower();
-
-            return zoneLocations.FirstOrDefault(x => x.ZoneId.ToLower().Contains(tz) == true);
         }
     }
 }
