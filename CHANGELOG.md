@@ -10,6 +10,8 @@ v1.1.0
 - Reminder service for saving reminders
 - Command for saving reminders
 - Help for reminders
+- Python ML component for parsing dates
+- Grpc communication
 ### Changed
 ### Fixed
 
