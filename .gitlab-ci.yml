@@ -52,14 +52,12 @@ deploy:
     - mkdir -p ~/.ssh && touch ~/.ssh/known_hosts
     - ssh-keyscan -t rsa 51.83.74.19 > ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
-  after_script:
-    - ssh deployer@51.83.74.19 docker system prune y
 
   script:
     - ssh deployer@51.83.74.19 docker login -u $GITLAB_USER_NAME -p $ACCESS_TOKEN $CI_REGISTRY
     - ssh deployer@51.83.74.19 docker pull $CI_REGISTRY/$REGISTRY_USER/niverobot/niverobot:22a06a6d
     - ssh deployer@51.83.74.19 docker pull $CI_REGISTRY/$REGISTRY_USER/niverobot/dateparser:22a06a6d
-    - ssh deployer@51.83.74.19 docker stop niverobot dateparser
-    - ssh deployer@51.83.74.19 docker rm niverobot dateparser
+#    - ssh deployer@51.83.74.19 docker stop niverobot dateparser
+#    - ssh deployer@51.83.74.19 docker rm niverobot dateparser
     - ssh deployer@51.83.74.19 docker run -d --name niverobot -e BotConfiguration__BotToken=$BOT_TOKEN -e ConnectionStrings__SqlServer=$CONNECTION_STRING_NIVEROBOT -p 5000:80 --network niverobot-net -v /home/niverhawk/niverobot:/app/Logs $CI_REGISTRY/niverhawk/niverobot/niverobot:22a06a6d
     - ssh deployer@51.83.74.19 docker run -d --name dateparser -p $CI_REGISTRY/niverhawk/niverobot/dateparser:22a06a6d 
