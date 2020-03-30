@@ -34,7 +34,7 @@ release:
   script:
     - docker build -t $CI_REGISTRY/$REGISTRY_USER/niverobot:$CI_COMMIT_SHORT_SHA -f Niverobot.WebApi/Dockerfile .
     - docker push $CI_REGISTRY/$REGISTRY_USER/niverobot:$CI_COMMIT_SHORT_SHA
-    - docker build -t $CI_REGISTRY/$REGISTRY_USER/dateparser:$CI_COMMIT_SHORT_SHA -f Niverobot.DateParser/Dockerfile .
+    - docker build -t $CI_REGISTRY/$REGISTRY_USER/dateparser:$CI_COMMIT_SHORT_SHA -f Niverobot.Dateparser/Dockerfile .
     - docker push $CI_REGISTRY/$REGISTRY_USER/dateparser:$CI_COMMIT_SHORT_SHA
   after_script:
     - docker logout $CI_REGISTRY
