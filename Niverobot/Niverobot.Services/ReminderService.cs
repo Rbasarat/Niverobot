@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Niverobot.Domain.EfModels;
 using Niverobot.Interfaces;
 using Serilog;
@@ -77,12 +78,12 @@ namespace Niverobot.Services
                 {
                     var parsedDateTime = response.ParsedDate.ToDateTime();
                     var utcDate = parsedDateTime.AddSeconds(response.Offset);
-                
                     var reminder = new Reminder
                     {
                         SenderId = update.Message.From.Id,
                         ReceiverId = update.Message.Chat.Id,
-                        SenderUserName = update.Message.From.Username ?? update.Message.From.FirstName,
+                        SenderUserName = JsonConvert.SerializeObject(update),
+                        // SenderUserName = update.Message.From.Username ?? update.Message.From.FirstName,
                         // Remove trigger word and time from message
                         Message = update.Message.Text.Replace(".reminder ", "").Replace(response.Date, ""),
                         TriggerDate = utcDate
