@@ -59,8 +59,5 @@ deploy:
     - ssh deployer@51.83.74.19 docker pull $CI_REGISTRY/$REGISTRY_USER/niverobot/dateparser:7be4766a
 #    - ssh deployer@51.83.74.19 docker stop niverobot dateparser
 #    - ssh deployer@51.83.74.19 docker rm niverobot dateparser
-#    - ssh deployer@51.83.74.19 docker run -d --name niverobot -e BotConfiguration__BotToken=$BOT_TOKEN -e ConnectionStrings__SqlServer=$CONNECTION_STRING_NIVEROBOT -e ConnectionStrings__DateParser=$CONNECTION_STRING_DATEPARSER -p 5000:80 -v /home/niverhawk/niverobot/Logs:/app/Logs $CI_REGISTRY/niverhawk/niverobot/niverobot:7be4766a
-    - ssh deployer@51.83.74.19 docker run -d -e BotConfiguration__BotToken=$BOT_TOKEN -e ConnectionStrings__SqlServer=$CONNECTION_STRING_NIVEROBOT -e ConnectionStrings__DateParser=$CONNECTION_STRING_DATEPARSER -p 5000:80 --name niverobot -v /home/niverhawk/niverobot:/app/Logs $CI_REGISTRY/niverhawk/niverobot/niverobot:7be4766a
+#    - ssh deployer@51.83.74.19 docker run -d -e BotConfiguration__BotToken=$BOT_TOKEN -e ConnectionStrings__SqlServer=$CONNECTION_STRING_NIVEROBOT -e ConnectionStrings__DateParser=$CONNECTION_STRING_DATEPARSER -p 5000:80 --name niverobot -v /home/niverhawk/niverobot:/app/Logs $CI_REGISTRY/niverhawk/niverobot/niverobot:7be4766a
     - ssh deployer@51.83.74.19 docker run -d --name dateparser -p 3001:50051 $CI_REGISTRY/niverhawk/niverobot/dateparser:7be4766a
-
-      
