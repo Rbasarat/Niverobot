@@ -38,8 +38,12 @@ msbuild.wrn
 
 #python venv
 venv/
+
 # Logging
 Logs
+
+# Docker volumes
+Db/
 
 **/appsettings.Development.json
 **/appsettings.Production.json
