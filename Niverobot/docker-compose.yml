@@ -3,6 +3,7 @@ version: '3.7'
 services:
   Niverobot.WebApi:
     image: niverobot
+    container_name: WebApi
     build:
       context: .
       dockerfile: ./Niverobot.WebApi/Development.Dockerfile
@@ -17,6 +18,7 @@ services:
 
   Niverobot.SQL:
     image: "mcr.microsoft.com/mssql/server:2019-latest"
+    container_name: SQL19
     volumes:
       - ./Db:/var/opt/mssql/data
     environment:
@@ -27,8 +29,9 @@ services:
       
   Niverobot.Dateparser:
     image: dateparser
+    container_name: DateParser
     build: 
       context: .
       dockerfile: ./Niverobot.Dateparser/Dockerfile
     ports:
-      - "3001:50051"
+      - "3001:80"
