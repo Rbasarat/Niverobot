@@ -55,8 +55,8 @@ deploy:
 
   script:
     - ssh deployer@51.83.74.19 docker login -u $GITLAB_USER_NAME -p $ACCESS_TOKEN $CI_REGISTRY
-    - ssh deployer@51.83.74.19 docker pull $CI_REGISTRY/$REGISTRY_USER/niverobot/niverobot:7c27a003
-    - ssh deployer@51.83.74.19 docker pull $CI_REGISTRY/$REGISTRY_USER/niverobot/dateparser:7c27a003
+    - ssh deployer@51.83.74.19 docker pull $CI_REGISTRY/$REGISTRY_USER/niverobot/niverobot
+    - ssh deployer@51.83.74.19 docker pull $CI_REGISTRY/$REGISTRY_USER/niverobot/dateparser
     - ssh deployer@51.83.74.19 docker stop niverobot dateparser
     - ssh deployer@51.83.74.19 docker rm niverobot dateparser
     - ssh deployer@51.83.74.19 docker run -d \
@@ -65,7 +65,7 @@ deploy:
       -p 5000:80 \
       --name niverobot \
       -v /home/niverhawk/niverobot/Logs:/app/Logs \
-      $CI_REGISTRY/niverhawk/niverobot/niverobot \
+      $CI_REGISTRY/niverhawk/niverobot/niverobot 
     - ssh deployer@51.83.74.19 docker run -d \
       --name dateparser \
       $CI_REGISTRY/niverhawk/niverobot/dateparser \
