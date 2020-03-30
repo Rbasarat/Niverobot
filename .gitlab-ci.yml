@@ -26,8 +26,8 @@ release:
   image: docker:19.03.1
   services:
     - docker:19.03.1-dind
-  only:
-    - master
+#  only:
+#    - master
   before_script:
     - docker login -u $GITLAB_USER_NAME -p $ACCESS_TOKEN $CI_REGISTRY
     - cd Niverobot
@@ -42,8 +42,8 @@ release:
 
 deploy:
   image: ubuntu:latest
-  only:
-    - master
+#  only:
+#    - master
   stage: deploy
   before_script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
@@ -65,4 +65,6 @@ deploy:
       -p 5000:80 \
       --name niverobot \
       -v /home/niverhawk/niverobot/Logs:/app/Logs $CI_REGISTRY/niverhawk/$IMAGE_NAME \
-    - ssh deployer@51.83.74.19 docker run -d --name dateparser
+    - ssh deployer@51.83.74.19 docker run -d \
+      --name dateparser \
+      -p 3001:50051
