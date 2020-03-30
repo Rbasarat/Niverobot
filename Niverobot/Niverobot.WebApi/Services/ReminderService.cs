@@ -82,7 +82,7 @@ namespace Niverobot.WebApi.Services
                 {
                     SenderId = update.Message.From.Id,
                     ReceiverId = update.Message.Chat.Id,
-                    SenderUserName = update.Message.From.Username,
+                    SenderUserName = update.Message.From.Username ?? update.Message.From.FirstName,
                     // Remove trigger word and time from message
                     Message = update.Message.Text.Replace(".reminder ", "").Replace(response.Date, ""),
                     TriggerDate = utcTime
