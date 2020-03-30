@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Niverobot.Domain.EfModels;
 using Niverobot.Interfaces;
@@ -31,7 +33,7 @@ namespace Niverobot.Services
             }
             else
             {
-                await SetReminderAsync(update);
+                await SaveReminderAsync(update);
             }
         }
 
@@ -56,7 +58,7 @@ namespace Niverobot.Services
             ;
         }
 
-        private async Task SetReminderAsync(Update update)
+        private async Task SaveReminderAsync(Update update)
         {
             try
             {
@@ -74,7 +76,7 @@ namespace Niverobot.Services
                 else
                 {
                     var parsedDateTime = response.ParsedDate.ToDateTime();
-                    var utcTime = parsedDateTime.AddSeconds(response.Offset);
+                    var utcDate = parsedDateTime.AddSeconds(response.Offset);
                 
                     var reminder = new Reminder
                     {
@@ -83,7 +85,7 @@ namespace Niverobot.Services
                         SenderUserName = update.Message.From.Username ?? update.Message.From.FirstName,
                         // Remove trigger word and time from message
                         Message = update.Message.Text.Replace(".reminder ", "").Replace(response.Date, ""),
-                        TriggerDate = utcTime
+                        TriggerDate = utcDate
                     };
 
                     _context.Reminders.Add(reminder);
@@ -104,6 +106,21 @@ namespace Niverobot.Services
                 );
                 Log.Error("Error setting reminder: {0}", e);
             }
+        }
+
+        public async Task SendReminderAsync(Reminder reminder)
+        {
+            var message = ("Reminder: {0}", reminder.Message);
+            await _telegramBotService.Client.SendTextMessageAsync(
+                chatId: reminder.SenderId,
+                text: $"Reminder: {reminder.Message} \n\n Sender: {reminder.SenderUserName}",
+                Telegram.Bot.Types.Enums.ParseMode.Markdown
+            );
+        }
+
+        public IQueryable<Reminder> GetReminders(DateTime currentDate)
+        {
+            return _context.Reminders.Where(x => x.TriggerDate > currentDate).Take(10);
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Niverobot.Domain.EfModels;
 using Telegram.Bot.Types;
 
 namespace Niverobot.Interfaces
@@ -6,5 +9,7 @@ namespace Niverobot.Interfaces
     public interface IReminderService
     {
         Task HandleReminderAsync(Update update);
+        Task SendReminderAsync(Reminder reminder);
+        IQueryable<Reminder> GetReminders(DateTime currentDate);
     }
 }
