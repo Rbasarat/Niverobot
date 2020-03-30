@@ -33,7 +33,8 @@ services:
     build: 
       context: .
       dockerfile: ./Niverobot.Dateparser/Dockerfile
-
+    ports:
+    - 3001:50051
   Niverobot.Consumer:
     image: consumer
     container_name: consumer
