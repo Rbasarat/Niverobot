@@ -17,6 +17,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Niverobot.Domain", "Niverob
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Niverobot.Protos", "Niverobot.Protos\Niverobot.Protos.csproj", "{732E226B-3E8E-43A2-ACFC-D7C047C62562}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Niverobot.Interfaces", "Niverobot.Interfaces\Niverobot.Interfaces.csproj", "{CC15A494-9FB9-4BF9-823B-4F68B7A8EF6A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Niverobot.Services", "Niverobot.Services\Niverobot.Services.csproj", "{0AA261BC-F71D-4CF4-B720-0D9EBCEE756C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Niverobot.Consumer", "Niverobot.Consumer\Niverobot.Consumer.csproj", "{861DB540-7895-47F7-9BAF-AD43AFB0EA58}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +41,18 @@ Global
 		{732E226B-3E8E-43A2-ACFC-D7C047C62562}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{732E226B-3E8E-43A2-ACFC-D7C047C62562}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{732E226B-3E8E-43A2-ACFC-D7C047C62562}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC15A494-9FB9-4BF9-823B-4F68B7A8EF6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC15A494-9FB9-4BF9-823B-4F68B7A8EF6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC15A494-9FB9-4BF9-823B-4F68B7A8EF6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC15A494-9FB9-4BF9-823B-4F68B7A8EF6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AA261BC-F71D-4CF4-B720-0D9EBCEE756C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AA261BC-F71D-4CF4-B720-0D9EBCEE756C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AA261BC-F71D-4CF4-B720-0D9EBCEE756C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AA261BC-F71D-4CF4-B720-0D9EBCEE756C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{861DB540-7895-47F7-9BAF-AD43AFB0EA58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{861DB540-7895-47F7-9BAF-AD43AFB0EA58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{861DB540-7895-47F7-9BAF-AD43AFB0EA58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{861DB540-7895-47F7-9BAF-AD43AFB0EA58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
