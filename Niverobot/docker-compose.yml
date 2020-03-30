@@ -18,10 +18,12 @@ services:
   Niverobot.SQL:
     image: "mcr.microsoft.com/mssql/server:2019-latest"
     volumes:
-      - ./Db:/sql
+      - ./Db:/var/opt/mssql/data
     environment:
       SA_PASSWORD: "ad6QVLqE@W"
       ACCEPT_EULA: "Y"
+    ports:
+      - 1433:1433
       
   Niverobot.Dateparser:
     image: dateparser
