@@ -4,30 +4,30 @@ variables:
   REGISTRY_USER: niverhawk
 
 stages:
-  - build
+#  - build
   - release
   - deploy
 
-build:
-  image: docker:19.03.1
-  services:
-    - docker:19.03.1-dind
-  before_script:
-    - cd Niverobot
-  script:
-    - docker build -t $CI_REGISTRY/niverhawk/niverobot -f Niverobot.WebApi/Dockerfile .
-    - docker build -t $CI_REGISTRY/niverhawk/dateparser -f Niverobot.Dateparser/Dockerfile .
-  stage: build
-  except:
-    - master 
+#build:
+#  image: docker:19.03.1
+#  services:
+#    - docker:19.03.1-dind
+#  before_script:
+#    - cd Niverobot
+#  script:
+#    - docker build -t $CI_REGISTRY/niverhawk/niverobot -f Niverobot.WebApi/Dockerfile .
+#    - docker build -t $CI_REGISTRY/niverhawk/dateparser -f Niverobot.Dateparser/Dockerfile .
+#  stage: build
+#  except:
+#    - master 
 
 
 release:
   image: docker:19.03.1
   services:
     - docker:19.03.1-dind
-#  only:
-#    - master
+  only:
+    - master
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - cd Niverobot
@@ -55,8 +55,8 @@ deploy:
 
   script:
     - ssh deployer@51.83.74.19 docker login -u $GITLAB_USER_NAME -p $ACCESS_TOKEN $CI_REGISTRY
-    - ssh deployer@51.83.74.19 docker pull $CI_REGISTRY/$REGISTRY_USER/niverobot/niverobot:$CI_COMMIT_SHORT_SHA
-    - ssh deployer@51.83.74.19 docker pull $CI_REGISTRY/$REGISTRY_USER/niverobot/dateparser:$CI_COMMIT_SHORT_SHA
+    - ssh deployer@51.83.74.19 docker pull $CI_REGISTRY/$REGISTRY_USER/niverobot/niverobot:7c27a003
+    - ssh deployer@51.83.74.19 docker pull $CI_REGISTRY/$REGISTRY_USER/niverobot/dateparser:7c27a003
     - ssh deployer@51.83.74.19 docker stop niverobot dateparser
     - ssh deployer@51.83.74.19 docker rm niverobot dateparser
     - ssh deployer@51.83.74.19 docker run -d \
