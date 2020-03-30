@@ -22,9 +22,9 @@ class DateParser(dateparser_pb2_grpc.DateParserServicer):
         timestamp = Timestamp()
         if date is not None:
             timestamp.FromDatetime((date[0][1]))
-            return dateparser_pb2.ParseDateReply(ParsedDate=timestamp, Offset=date[0][1].utcoffset().total_seconds())
+            return dateparser_pb2.ParseDateReply(ParsedDate=timestamp, Offset=date[0][1].utcoffset().total_seconds(), Date=date[0][0])
         else:
-            return dateparser_pb2.ParseDateReply(ParsedDate=timestamp, Offset=0)
+            return dateparser_pb2.ParseDateReply(ParsedDate=timestamp, Offset=0, Date="Error")
 
 
 def serve():

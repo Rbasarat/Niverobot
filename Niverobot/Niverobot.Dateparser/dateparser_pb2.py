@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='dateparser',
   syntax='proto3',
   serialized_options=b'\n\033io.grpc.examples.helloworldB\017HelloWorldProtoP\001\242\002\003HLW',
-  serialized_pb=b'\n\x10\x64\x61teparser.proto\x12\ndateparser\x1a\x1fgoogle/protobuf/timestamp.proto\"\'\n\x10ParseDateRequest\x12\x13\n\x0bNaturalDate\x18\x01 \x01(\t\"P\n\x0eParseDateReply\x12.\n\nParsedDate\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0e\n\x06Offset\x18\x02 \x01(\x02\x32U\n\nDateParser\x12G\n\tParseDate\x12\x1c.dateparser.ParseDateRequest\x1a\x1a.dateparser.ParseDateReply\"\x00\x42\x36\n\x1bio.grpc.examples.helloworldB\x0fHelloWorldProtoP\x01\xa2\x02\x03HLWb\x06proto3'
+  serialized_pb=b'\n\x10\x64\x61teparser.proto\x12\ndateparser\x1a\x1fgoogle/protobuf/timestamp.proto\"\'\n\x10ParseDateRequest\x12\x13\n\x0bNaturalDate\x18\x01 \x01(\t\"^\n\x0eParseDateReply\x12.\n\nParsedDate\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0e\n\x06Offset\x18\x02 \x01(\x02\x12\x0c\n\x04\x44\x61te\x18\x03 \x01(\t2U\n\nDateParser\x12G\n\tParseDate\x12\x1c.dateparser.ParseDateRequest\x1a\x1a.dateparser.ParseDateReply\"\x00\x42\x36\n\x1bio.grpc.examples.helloworldB\x0fHelloWorldProtoP\x01\xa2\x02\x03HLWb\x06proto3'
   ,
   dependencies=[google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
 
@@ -78,6 +78,13 @@ _PARSEDATEREPLY = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='Date', full_name='dateparser.ParseDateReply.Date', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -91,7 +98,7 @@ _PARSEDATEREPLY = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=106,
-  serialized_end=186,
+  serialized_end=200,
 )
 
 _PARSEDATEREPLY.fields_by_name['ParsedDate'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
@@ -122,8 +129,8 @@ _DATEPARSER = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=188,
-  serialized_end=273,
+  serialized_start=202,
+  serialized_end=287,
   methods=[
   _descriptor.MethodDescriptor(
     name='ParseDate',

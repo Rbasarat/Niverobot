@@ -22,4 +22,5 @@ message ParseDateRequest {
 message ParseDateReply {
   google.protobuf.Timestamp ParsedDate = 1;
   float Offset = 2;
+  string Date = 3;
 }
