@@ -4,22 +4,22 @@ variables:
   REGISTRY_USER: niverhawk
 
 stages:
-#  - build
+  - build
   - release
   - deploy
 
-#build:
-#  image: docker:19.03.1
-#  services:
-#    - docker:19.03.1-dind
-#  before_script:
-#    - cd Niverobot
-#  script:
-#    - docker build -t $CI_REGISTRY/niverhawk/niverobot -f Niverobot.WebApi/Dockerfile .
-#    - docker build -t $CI_REGISTRY/niverhawk/dateparser -f Niverobot.Dateparser/Dockerfile .
-#  stage: build
-#  except:
-#    - master 
+build:
+  image: docker:19.03.1
+  services:
+    - docker:19.03.1-dind
+  before_script:
+    - cd Niverobot
+  script:
+    - docker build -t $CI_REGISTRY/niverhawk/niverobot -f Niverobot.WebApi/Dockerfile .
+    - docker build -t $CI_REGISTRY/niverhawk/dateparser -f Niverobot.Dateparser/Dockerfile .
+  stage: build
+  except:
+    - master 
 
 
 release:
@@ -42,8 +42,8 @@ release:
 
 deploy:
   image: ubuntu:latest
-#  only:
-#    - master
+  only:
+    - master
   stage: deploy
   before_script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
