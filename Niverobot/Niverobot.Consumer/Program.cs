@@ -59,25 +59,6 @@ namespace Niverobot.Consumer
             builder.StartAsync();
         }
 
-        // static void Main(string[] args)
-        // {
-        //     // Create service collection and configure our services
-        //     var services = ConfigureServices();
-        //     // Generate a provider
-        //     var serviceProvider = services.BuildServiceProvider();
-        //     try
-        //     {
-        //         // Kick off our actual code
-        //         serviceProvider.GetService<Consumer>().Run();
-        //         Console.ReadKey();
-        //     }
-        //     finally
-        //     {
-        //         // Flush logs when application is finished.
-        //         Log.CloseAndFlush();
-        //     }
-        // }
-
         private static IServiceCollection ConfigureServices()
         {
             IServiceCollection services = new ServiceCollection();
