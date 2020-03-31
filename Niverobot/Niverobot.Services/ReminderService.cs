@@ -17,15 +17,13 @@ namespace Niverobot.Services
         private readonly ITelegramBotService _telegramBotService;
         private readonly IGRPCService _grpcService;
         private readonly NiveroBotContext _context;
-        private readonly ITimezoneService _timezoneService;
 
         public ReminderService(ITelegramBotService telegramBotService, IGRPCService grpcService,
-            NiveroBotContext context, ITimezoneService timezoneService)
+            NiveroBotContext context)
         {
             _telegramBotService = telegramBotService;
             _grpcService = grpcService;
             _context = context;
-            _timezoneService = timezoneService;
         }
 
         public async Task HandleReminderAsync(Update update)
@@ -66,7 +64,6 @@ namespace Niverobot.Services
 
         private async Task SaveReminderAsync(Update update)
         {
-            var result = _timezoneService.GetUtcOffsetInSeconds(52.377956, 4.897070);
             try
             {
                 var response = _grpcService.ParseDateTimeFromNl(update.Message.Text);
@@ -128,6 +125,18 @@ namespace Niverobot.Services
         public IQueryable<Reminder> GetReminders(DateTime currentDate)
         {
             return _context.Reminders.Where(x => x.TriggerDate > currentDate).Take(10);
+        }
+        
+        public void SetReminderSend(int id)
+        {
+            var reminder = _context.Reminders.FirstOrDefault(x => x.Id == id);
+            if (reminder == null) return;
+            
+            var updatedReminder = reminder;
+            updatedReminder.Sent = true;
+            
+            _context.Entry(reminder).CurrentValues.SetValues(updatedReminder);  
+            _context.SaveChanges();
         }
     }
 }

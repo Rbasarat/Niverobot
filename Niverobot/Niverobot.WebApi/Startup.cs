@@ -1,10 +1,10 @@
-using Domain;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Niverobot.Domain;
 using Niverobot.Domain.EfModels;
 using Niverobot.Interfaces;
 using Niverobot.Services;
@@ -27,22 +27,16 @@ namespace Niverobot.WebApi
 
             services.AddMvc().AddNewtonsoftJson();
 
-
-            services.AddSingleton<ITelegramBotService, TelegramBotService>();
-            services.AddScoped<IMessageService, MessageService>();            
             services.AddScoped<IDadJokeService, DadJokeService>();
             services.AddScoped<ITimezoneService, TimezoneService>();
-            services.AddScoped<IReminderService, ReminderService>();
-            services.AddScoped<IGRPCService, GrpcService>();
             services.AddSingleton(Configuration);
-
-
-            services.AddTransient<ITelegramUpdateService, TelegramUpdateService>();
-
+            
             services.Configure<BotConfiguration>(Configuration.GetSection("BotConfiguration"));
 
             services.AddDbContext<NiveroBotContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("SqlServer")));
+            
+            services.AddInternalServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

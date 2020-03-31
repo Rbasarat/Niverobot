@@ -2,9 +2,9 @@
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Domain;
 using Niverobot.Interfaces;
 using Microsoft.Extensions.Configuration;
+using Niverobot.Domain;
 using Serilog;
 
 namespace Niverobot.Services

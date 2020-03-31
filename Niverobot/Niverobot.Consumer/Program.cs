@@ -1,6 +1,12 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Niverobot.Domain;
+using Niverobot.Domain.EfModels;
+using Niverobot.Interfaces;
+using Niverobot.Services;
+using Niverobot.WebApi;
 using Serilog;
 namespace Niverobot.Consumer
 {
@@ -16,6 +22,7 @@ namespace Niverobot.Consumer
             {
                 // Kick off our actual code
                 serviceProvider.GetService<Consumer>().Run();
+                Console.ReadKey();
             }
             finally
             {
@@ -38,7 +45,14 @@ namespace Niverobot.Consumer
 
             // Add the config to our DI container for later user
             services.AddSingleton(config);
+            
+            services.Configure<BotConfiguration>(config.GetSection("BotConfiguration"));
 
+            services.AddDbContext<NiveroBotContext>(options =>
+                options.UseSqlServer(config.GetConnectionString("SqlServer")));
+            
+            services.AddInternalServices();
+            
             // IMPORTANT! Register our application entry point
             services.AddTransient<Consumer>();
 

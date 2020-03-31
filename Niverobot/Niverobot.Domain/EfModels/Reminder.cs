@@ -10,5 +10,6 @@ namespace Niverobot.Domain.EfModels
         public DateTime TriggerDate { get; set; }
         public int SenderId { get; set; }
         public long ReceiverId { get; set; }
+        public bool Sent { get; set; } = false;
     }
 }
