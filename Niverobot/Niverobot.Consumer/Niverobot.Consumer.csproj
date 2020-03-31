@@ -13,15 +13,18 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.3" />
     <PackageReference Include="Serilog.Enrichers.Environment" Version="2.1.3" />
     <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
-    <PackageReference Include="Serilog.Exceptions" Version="5.3.1" />
+    <PackageReference Include="Serilog.Exceptions" Version="5.4.0" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
     <PackageReference Include="Serilog.Sinks.Async" Version="1.4.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
-    <PackageReference Include="Serilog.Sinks.File" Version="4.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Niverobot.Domain\Niverobot.Domain.csproj" />
     <ProjectReference Include="..\Niverobot.Interfaces\Niverobot.Interfaces.csproj" />
+    <ProjectReference Include="..\Niverobot.Services\Niverobot.Services.csproj" />
+    <ProjectReference Include="..\Niverobot.WebApi\Niverobot.WebApi.csproj" />
   </ItemGroup>
 
 </Project>

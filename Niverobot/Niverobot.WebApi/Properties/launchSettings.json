@@ -20,7 +20,7 @@
     "Niverobot.WebApi": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/echo",
+      "launchUrl": "api/update",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

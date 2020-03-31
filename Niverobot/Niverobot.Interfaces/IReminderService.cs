@@ -11,5 +11,6 @@ namespace Niverobot.Interfaces
         Task HandleReminderAsync(Update update);
         Task SendReminderAsync(Reminder reminder);
         IQueryable<Reminder> GetReminders(DateTime currentDate);
+        void SetReminderSend(int id);
     }
 }

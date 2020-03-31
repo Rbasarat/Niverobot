@@ -15,6 +15,8 @@ services:
       - Niverobot.SQL
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - niverobot_default
 
   Niverobot.SQL:
     image: "mcr.microsoft.com/mssql/server:2019-latest"
@@ -26,6 +28,8 @@ services:
       ACCEPT_EULA: "Y"
     ports:
       - 1433:1433
+    networks:
+      - niverobot_default
       
   Niverobot.Dateparser:
     image: dateparser
@@ -35,9 +39,19 @@ services:
       dockerfile: ./Niverobot.Dateparser/Dockerfile
     ports:
     - 3001:50051
+    networks:
+      - niverobot_default
+      
   Niverobot.Consumer:
     image: consumer
     container_name: consumer
     build:
       context: .
       dockerfile: ./Niverobot.Consumer/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - niverobot_default
+      
+networks:
+  niverobot_default:
