@@ -7,6 +7,8 @@ using Niverobot.Domain.EfModels;
 using Niverobot.Interfaces;
 using Serilog;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Niverobot.Services
 {
@@ -15,13 +17,15 @@ namespace Niverobot.Services
         private readonly ITelegramBotService _telegramBotService;
         private readonly IGRPCService _grpcService;
         private readonly NiveroBotContext _context;
+        private readonly ITimezoneService _timezoneService;
 
         public ReminderService(ITelegramBotService telegramBotService, IGRPCService grpcService,
-            NiveroBotContext context)
+            NiveroBotContext context, ITimezoneService timezoneService)
         {
             _telegramBotService = telegramBotService;
             _grpcService = grpcService;
             _context = context;
+            _timezoneService = timezoneService;
         }
 
         public async Task HandleReminderAsync(Update update)
@@ -52,8 +56,9 @@ namespace Niverobot.Services
                       "Some examples include:\n" +
                       "`.reminder drink water at 3pm`\n" +
                       "`.reminder wish Linda happy birthday on June 1st`\n" +
-                      "`.reminder \"Update the project status\" on Monday at 9am`\n" +
-                      "`.reminder reminder! interview in 3 hours`\n",
+                      "`.reminder \"Update the project status\" on Monday at 9am utc+2`\n" +
+                      "`.reminder reminder! interview in 3 hours`\n"+
+                      "*I am timezone unaware, so help me by adding your timezone to the reminder!*",
                 parseMode: Telegram.Bot.Types.Enums.ParseMode.Markdown
             );
             ;
@@ -61,6 +66,7 @@ namespace Niverobot.Services
 
         private async Task SaveReminderAsync(Update update)
         {
+            var result = _timezoneService.GetUtcOffsetInSeconds(52.377956, 4.897070);
             try
             {
                 var response = _grpcService.ParseDateTimeFromNl(update.Message.Text);
@@ -77,13 +83,14 @@ namespace Niverobot.Services
                 else
                 {
                     var parsedDateTime = response.ParsedDate.ToDateTime();
-                    var utcDate = parsedDateTime.AddSeconds(response.Offset);
+                    var offset = response.Offset;
+
+                    var utcDate = parsedDateTime.AddSeconds(offset);
                     var reminder = new Reminder
                     {
                         SenderId = update.Message.From.Id,
                         ReceiverId = update.Message.Chat.Id,
-                        SenderUserName = JsonConvert.SerializeObject(update),
-                        // SenderUserName = update.Message.From.Username ?? update.Message.From.FirstName,
+                        SenderUserName = update.Message.From.Username ?? update.Message.From.FirstName,
                         // Remove trigger word and time from message
                         Message = update.Message.Text.Replace(".reminder ", "").Replace(response.Date, ""),
                         TriggerDate = utcDate
@@ -111,10 +118,9 @@ namespace Niverobot.Services
 
         public async Task SendReminderAsync(Reminder reminder)
         {
-            var message = ("Reminder: {0}", reminder.Message);
             await _telegramBotService.Client.SendTextMessageAsync(
                 chatId: reminder.SenderId,
-                text: $"Reminder: {reminder.Message} \n\n Sender: {reminder.SenderUserName}",
+                text: $"Reminder from {reminder.SenderUserName}:\n {reminder.Message} ",
                 Telegram.Bot.Types.Enums.ParseMode.Markdown
             );
         }
