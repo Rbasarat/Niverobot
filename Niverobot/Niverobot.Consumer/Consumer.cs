@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Timers;
 using System.Linq;
-using System.Threading;
 using Microsoft.Extensions.Configuration;
 using Niverobot.Domain.EfModels;
 using Niverobot.Interfaces;
@@ -24,23 +24,28 @@ namespace Niverobot.Consumer
         {
             try
             {
-                var timer = new Timer(RetrieveAndSendReminders, null, TimeSpan.Zero,
-                    TimeSpan.FromSeconds(5));
+                // 10 Seconds interval
+                Timer timer = new Timer(10000);
+                timer.Elapsed += ( sender, e ) =>  RetrieveAndSendReminders();
+                timer.Start();
+                
             }
             catch (Exception e)
             {
-                Log.Error("Error consuming reminder", e);
+                Log.Error("Error consuming reminder {0}", e);
             }
         }
 
         private void RetrieveAndSendReminders(object state = null)
         {
+            Console.WriteLine("starting check {0}", DateTime.UtcNow);
             try
             {
-                var now = DateTime.UtcNow;
-                var nextReminders = _reminderService.GetReminders(now);
+                var start = DateTime.UtcNow;
+                var end = DateTime.UtcNow.AddMinutes(1);
+                var nextReminders = _reminderService.GetNotSendReminders(start).ToList();
                 var currentReminders = nextReminders.Where(x =>
-                    x.TriggerDate > now && x.TriggerDate < now.AddMinutes(1));
+                   x.TriggerDate < end).ToList();
                 foreach (var reminder in currentReminders)
                 {
                     _reminderService.SendReminderAsync(reminder);
@@ -50,7 +55,7 @@ namespace Niverobot.Consumer
             }
             catch (Exception e)
             {
-                Log.Error("Error consuming reminder", e);
+                Log.Error("Error consuming reminder {0}", e);
             }
         }
     }
