@@ -20,24 +20,7 @@ namespace Niverobot.Consumer
             _config = config;
             _reminderService = reminderService;
         }
-
-        // Application starting point
-        // public void Run()
-        // {
-        //     try
-        //     {
-        //         // 10 Seconds interval
-        //         Timer timer = new Timer(10000);
-        //         timer.Elapsed += (sender, e) => RetrieveAndSendReminders();
-        //         timer.Start();
-        //
-        //     }
-        //     catch (Exception e)
-        //     {
-        //         Log.Error("Error consuming reminder {0}", e);
-        //     }
-        // }
-        
+       
         public Task StartAsync(CancellationToken cancellationToken)
         {
             _timer = new Timer(RetrieveAndSendReminders, null, TimeSpan.Zero, 
