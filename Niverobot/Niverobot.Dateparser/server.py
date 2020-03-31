@@ -11,11 +11,12 @@ import dateparser_pb2_grpc
 # TODO: Add logging
 # https://github.com/scrapinghub/dateparser#features
 
+
 class DateParser(dateparser_pb2_grpc.DateParserServicer):
 
     def ParseDate(self, request, context):
         date = search_dates(request.NaturalDate, settings={
-                            'RETURN_AS_TIMEZONE_AWARE': True, 'RETURN_TIME_AS_PERIOD': True})
+                            'RETURN_AS_TIMEZONE_AWARE': True, 'RETURN_TIME_AS_PERIOD': True, 'PREFER_DATES_FROM': 'future'})
         return self.CreateResponse(date)
 
     def CreateResponse(self, date):
