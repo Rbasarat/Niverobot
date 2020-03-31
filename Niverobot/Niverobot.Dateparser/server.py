@@ -3,6 +3,7 @@ import logging
 import grpc
 from dateparser.search import search_dates
 from google.protobuf.timestamp_pb2 import Timestamp
+import datetime
 
 import dateparser_pb2
 import dateparser_pb2_grpc
@@ -16,7 +17,7 @@ class DateParser(dateparser_pb2_grpc.DateParserServicer):
 
     def ParseDate(self, request, context):
         date = search_dates(request.NaturalDate, settings={
-                            'RETURN_AS_TIMEZONE_AWARE': True, 'RETURN_TIME_AS_PERIOD': True, 'PREFER_DATES_FROM': 'future'})
+                            'RETURN_AS_TIMEZONE_AWARE': True, 'RETURN_TIME_AS_PERIOD': True, 'PREFER_DATES_FROM': 'future', 'RELATIVE_BASE': datetime.datetime.utcnow()})
         return self.CreateResponse(date)
 
     def CreateResponse(self, date):
