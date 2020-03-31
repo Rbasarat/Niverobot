@@ -9,10 +9,10 @@ import dateparser_pb2_grpc
 
 
 def run():
-    with grpc.insecure_channel('localhost:3001') as channel:
+    with grpc.insecure_channel('localhost:50051') as channel:
         stub = dateparser_pb2_grpc.DateParserStub(channel)
         response = stub.ParseDate(
-            dateparser_pb2.ParseDateRequest(NaturalDate='.reminder drink water in 1 month'))
+            dateparser_pb2.ParseDateRequest(NaturalDate='.reminder drink water in tomorrow'))
 
     print(response)
 
