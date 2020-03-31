@@ -4,31 +4,31 @@ variables:
   REGISTRY_USER: niverhawk
 
 stages:
-#  - build
+  - build
   - release
   - deploy
 
-#build:
-#  image: docker:19.03.1
-#  services:
-#    - docker:19.03.1-dind
-#  before_script:
-#    - cd Niverobot
-#  script:
-#    - docker build -t $CI_REGISTRY/niverhawk/niverobot/niverobot -f Niverobot.WebApi/Dockerfile .
-#    - docker build -t $CI_REGISTRY/niverhawk/niverbot/dateparser -f Niverobot.Dateparser/Dockerfile .
-#    - docker build -t $CI_REGISTRY/niverhawk/niverobot/consumer -f Niverobot.Consumer/Dockerfile .
-#  stage: build
-#  except:
-#    - master 
+build:
+  image: docker:19.03.1
+  services:
+    - docker:19.03.1-dind
+  before_script:
+    - cd Niverobot
+  script:
+    - docker build -t $CI_REGISTRY/niverhawk/niverobot/niverobot -f Niverobot.WebApi/Dockerfile .
+    - docker build -t $CI_REGISTRY/niverhawk/niverbot/dateparser -f Niverobot.Dateparser/Dockerfile .
+    - docker build -t $CI_REGISTRY/niverhawk/niverobot/consumer -f Niverobot.Consumer/Dockerfile .
+  stage: build
+  except:
+    - master 
 
 
 release:
   image: docker:19.03.1
   services:
     - docker:19.03.1-dind
-#  only:
-#    - master
+  only:
+    - master
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - cd Niverobot
@@ -45,8 +45,8 @@ release:
 
 deploy:
   image: ubuntu:latest
-#  only:
-#    - master
+  only:
+    - master
   stage: deploy
   before_script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
