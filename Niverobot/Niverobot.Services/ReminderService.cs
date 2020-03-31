@@ -116,7 +116,7 @@ namespace Niverobot.Services
         public async Task SendReminderAsync(Reminder reminder)
         {
             await _telegramBotService.Client.SendTextMessageAsync(
-                chatId: reminder.SenderId,
+                chatId: reminder.ReceiverId,
                 text: $"Reminder from {reminder.SenderUserName}:\n {reminder.Message} ",
                 Telegram.Bot.Types.Enums.ParseMode.Markdown
             );
