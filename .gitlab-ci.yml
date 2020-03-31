@@ -65,4 +65,4 @@ deploy:
     - ssh deployer@51.83.74.19 docker rm niverobot dateparser consumer
     - ssh deployer@51.83.74.19 docker run -d --name niverobot --network niverobot_default -e BotConfiguration__BotToken=$BOT_TOKEN -e ConnectionStrings__SqlServer=$CONNECTION_STRING_SQL -e ConnectionStrings__DateParser=$CONNECTION_STRING_DATEPARSER -p 5000:80 -v /home/niverhawk/niverobot:/app/Logs/Niverobot.WebApi $CI_REGISTRY/niverhawk/niverobot/niverobot:$CI_COMMIT_SHORT_SHA
     - ssh deployer@51.83.74.19 docker run -d --name dateparser --network niverobot_default $CI_REGISTRY/niverhawk/niverobot/dateparser:$CI_COMMIT_SHORT_SHA 
-    - ssh deployer@51.83.74.19 docker run -d --name consumer --network niverobot_default $CI_REGISTRY/niverhawk/niverobot/consumer:$CI_COMMIT_SHORT_SHA 
+    - ssh deployer@51.83.74.19 docker run -d --name consumer --network niverobot_default -e BotConfiguration__BotToken=$BOT_TOKEN -e ConnectionStrings__SqlServer=$CONNECTION_STRING_SQL -e ConnectionStrings__DateParser=$CONNECTION_STRING_DATEPARSER  $CI_REGISTRY/niverhawk/niverobot/consumer:$CI_COMMIT_SHORT_SHA 
