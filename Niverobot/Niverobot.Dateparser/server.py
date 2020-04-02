@@ -17,7 +17,7 @@ class DateParser(dateparser_pb2_grpc.DateParserServicer):
 
     def ParseDate(self, request, context):
         date = search_dates(request.NaturalDate, settings={
-                            'RETURN_AS_TIMEZONE_AWARE': True, 'RETURN_TIME_AS_PERIOD': True, 'PREFER_DATES_FROM': 'future', 'RELATIVE_BASE': datetime.datetime.utcnow()})
+                            'RETURN_AS_TIMEZONE_AWARE': True, 'RETURN_TIME_AS_PERIOD': True, 'PREFER_DATES_FROM': 'future', 'RELATIVE_BASE': datetime.datetime.utcnow(), 'DATE_ORDER': 'DMY'})
         return self.CreateResponse(date)
 
     def CreateResponse(self, date):
