@@ -82,7 +82,7 @@ namespace Niverobot.Services
                     var parsedDateTime = response.ParsedDate.ToDateTime();
                     var offset = response.Offset;
 
-                    var utcDate = parsedDateTime.AddSeconds(offset);
+                    parsedDateTime.AddSeconds(offset);
                     var reminder = new Reminder
                     {
                         SenderId = update.Message.From.Id,
@@ -90,7 +90,7 @@ namespace Niverobot.Services
                         SenderUserName = update.Message.From.Username ?? update.Message.From.FirstName,
                         // Remove trigger word and time from message
                         Message = update.Message.Text.Replace(".reminder ", "").Replace(response.Date, ""),
-                        TriggerDate = utcDate
+                        TriggerDate = parsedDateTime
                     };
 
                     _context.Reminders.Add(reminder);
