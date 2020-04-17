@@ -80,9 +80,6 @@ namespace Niverobot.Services
                 else
                 {
                     var parsedDateTime = response.ParsedDate.ToDateTime();
-                    var offset = response.Offset;
-
-                    parsedDateTime.AddSeconds(offset);
                     var reminder = new Reminder
                     {
                         SenderId = update.Message.From.Id,
