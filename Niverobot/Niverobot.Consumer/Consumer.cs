@@ -24,7 +24,7 @@ namespace Niverobot.Consumer
         public Task StartAsync(CancellationToken cancellationToken)
         {
             _timer = new Timer(RetrieveAndSendReminders, null, TimeSpan.Zero, 
-                TimeSpan.FromSeconds(10));
+                TimeSpan.FromSeconds(2));
             
             return Task.CompletedTask;
         }
@@ -47,11 +47,9 @@ namespace Niverobot.Consumer
             try
             {
                 var start = DateTime.UtcNow;
-                var end = DateTime.UtcNow.AddMinutes(1);
                 var nextReminders = _reminderService.GetNotSendReminders(start).ToList();
-                var currentReminders = nextReminders.Where(x =>
-                    x.TriggerDate < end).ToList();
-                foreach (var reminder in currentReminders)
+
+                foreach (var reminder in nextReminders)
                 {
                     _reminderService.SendReminderAsync(reminder);
                     _reminderService.SetReminderSend(reminder.Id);
