@@ -121,7 +121,7 @@ namespace Niverobot.Services
 
         public IQueryable<Reminder> GetNotSendReminders(DateTime currentDate)
         {
-            return _context.Reminders.Where(x => x.TriggerDate > currentDate && x.Sent == false);
+            return _context.Reminders.Where(x => x.TriggerDate < currentDate && x.Sent == false);
         }
         
         public void SetReminderSend(int id)
