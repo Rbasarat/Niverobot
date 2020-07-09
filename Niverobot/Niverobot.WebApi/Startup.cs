@@ -28,7 +28,6 @@ namespace Niverobot.WebApi
             services.AddMvc().AddNewtonsoftJson();
 
             services.AddScoped<IDadJokeService, DadJokeService>();
-            services.AddScoped<ITimezoneService, TimezoneService>();
             services.AddSingleton(Configuration);
             
             services.Configure<BotConfiguration>(Configuration.GetSection("BotConfiguration"));

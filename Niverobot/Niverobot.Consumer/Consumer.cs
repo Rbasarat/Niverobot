@@ -11,13 +11,11 @@ namespace Niverobot.Consumer
 {
     public class Consumer : IHostedService, IDisposable
     {
-        private readonly IConfiguration _config;
         private readonly IReminderService _reminderService;
         private Timer _timer;
 
-        public Consumer(IConfiguration config, IReminderService reminderService)
+        public Consumer(IReminderService reminderService)
         {
-            _config = config;
             _reminderService = reminderService;
         }
        
