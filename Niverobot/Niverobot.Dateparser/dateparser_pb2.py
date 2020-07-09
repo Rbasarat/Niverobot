@@ -16,10 +16,11 @@ from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='dateparser.proto',
-  package='dateparser',
+  package='dateParser',
   syntax='proto3',
-  serialized_options=b'\n\033io.grpc.examples.helloworldB\017HelloWorldProtoP\001\242\002\003HLW',
-  serialized_pb=b'\n\x10\x64\x61teparser.proto\x12\ndateparser\x1a\x1fgoogle/protobuf/timestamp.proto\"\'\n\x10ParseDateRequest\x12\x13\n\x0bNaturalDate\x18\x01 \x01(\t\"^\n\x0eParseDateReply\x12.\n\nParsedDate\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0e\n\x06Offset\x18\x02 \x01(\x02\x12\x0c\n\x04\x44\x61te\x18\x03 \x01(\t2U\n\nDateParser\x12G\n\tParseDate\x12\x1c.dateparser.ParseDateRequest\x1a\x1a.dateparser.ParseDateReply\"\x00\x42\x36\n\x1bio.grpc.examples.helloworldB\x0fHelloWorldProtoP\x01\xa2\x02\x03HLWb\x06proto3'
+  serialized_options=None,
+  create_key=_descriptor._internal_create_key,
+  serialized_pb=b'\n\x10\x64\x61teparser.proto\x12\ndateParser\x1a\x1fgoogle/protobuf/timestamp.proto\"\'\n\x10ParseDateRequest\x12\x13\n\x0bNaturalDate\x18\x01 \x01(\t\"^\n\x0eParseDateReply\x12.\n\nParsedDate\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0e\n\x06Offset\x18\x02 \x01(\x02\x12\x0c\n\x04\x44\x61te\x18\x03 \x01(\t2U\n\nDateParser\x12G\n\tParseDate\x12\x1c.dateParser.ParseDateRequest\x1a\x1a.dateParser.ParseDateReply\"\x00\x62\x06proto3'
   ,
   dependencies=[google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
 
@@ -28,18 +29,19 @@ DESCRIPTOR = _descriptor.FileDescriptor(
 
 _PARSEDATEREQUEST = _descriptor.Descriptor(
   name='ParseDateRequest',
-  full_name='dateparser.ParseDateRequest',
+  full_name='dateParser.ParseDateRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='NaturalDate', full_name='dateparser.ParseDateRequest.NaturalDate', index=0,
+      name='NaturalDate', full_name='dateParser.ParseDateRequest.NaturalDate', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -59,32 +61,33 @@ _PARSEDATEREQUEST = _descriptor.Descriptor(
 
 _PARSEDATEREPLY = _descriptor.Descriptor(
   name='ParseDateReply',
-  full_name='dateparser.ParseDateReply',
+  full_name='dateParser.ParseDateReply',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
+  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='ParsedDate', full_name='dateparser.ParseDateReply.ParsedDate', index=0,
+      name='ParsedDate', full_name='dateParser.ParseDateReply.ParsedDate', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='Offset', full_name='dateparser.ParseDateReply.Offset', index=1,
+      name='Offset', full_name='dateParser.ParseDateReply.Offset', index=1,
       number=2, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='Date', full_name='dateparser.ParseDateReply.Date', index=2,
+      name='Date', full_name='dateParser.ParseDateReply.Date', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -109,37 +112,38 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 ParseDateRequest = _reflection.GeneratedProtocolMessageType('ParseDateRequest', (_message.Message,), {
   'DESCRIPTOR' : _PARSEDATEREQUEST,
   '__module__' : 'dateparser_pb2'
-  # @@protoc_insertion_point(class_scope:dateparser.ParseDateRequest)
+  # @@protoc_insertion_point(class_scope:dateParser.ParseDateRequest)
   })
 _sym_db.RegisterMessage(ParseDateRequest)
 
 ParseDateReply = _reflection.GeneratedProtocolMessageType('ParseDateReply', (_message.Message,), {
   'DESCRIPTOR' : _PARSEDATEREPLY,
   '__module__' : 'dateparser_pb2'
-  # @@protoc_insertion_point(class_scope:dateparser.ParseDateReply)
+  # @@protoc_insertion_point(class_scope:dateParser.ParseDateReply)
   })
 _sym_db.RegisterMessage(ParseDateReply)
 
 
-DESCRIPTOR._options = None
 
 _DATEPARSER = _descriptor.ServiceDescriptor(
   name='DateParser',
-  full_name='dateparser.DateParser',
+  full_name='dateParser.DateParser',
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
+  create_key=_descriptor._internal_create_key,
   serialized_start=202,
   serialized_end=287,
   methods=[
   _descriptor.MethodDescriptor(
     name='ParseDate',
-    full_name='dateparser.DateParser.ParseDate',
+    full_name='dateParser.DateParser.ParseDate',
     index=0,
     containing_service=None,
     input_type=_PARSEDATEREQUEST,
     output_type=_PARSEDATEREPLY,
     serialized_options=None,
+    create_key=_descriptor._internal_create_key,
   ),
 ])
 _sym_db.RegisterServiceDescriptor(_DATEPARSER)
