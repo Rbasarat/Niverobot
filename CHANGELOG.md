@@ -12,7 +12,10 @@ v1.1.0
 - Help for reminders
 - Python ML component for parsing dates
 - Grpc communication
+- Infrastructure as code
 ### Changed
+- Removed docker
+- Set timezone fixed to netherlands
 ### Fixed
 
 v1.0.3

@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Niverobot.Domain.EfModels;
 using Niverobot.Interfaces;
 using Serilog;
 using Telegram.Bot.Types;
-using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Niverobot.Services
 {
@@ -55,7 +51,7 @@ namespace Niverobot.Services
                       "`.reminder drink water at 3pm`\n" +
                       "`.reminder wish Linda happy birthday on June 1st`\n" +
                       "`.reminder \"Update the project status\" on Monday at 9am utc+2`\n" +
-                      "`.reminder reminder! interview in 3 hours`\n"+
+                      "`.reminder reminder! interview in 3 hours`\n" +
                       "*I am timezone unaware, so help me by adding your timezone to the reminder!*",
                 parseMode: Telegram.Bot.Types.Enums.ParseMode.Markdown
             );
@@ -79,7 +75,9 @@ namespace Niverobot.Services
                 }
                 else
                 {
-                    var parsedDateTime = response.ParsedDate.ToDateTime();
+                    // Convert dutch time to utc. This will be a problem when supporting other timezones.
+                    var parsedDateTime = ConvertFromWesternEuropeanToUtc(response.ParsedDate.ToDateTime());
+
                     var reminder = new Reminder
                     {
                         SenderId = update.Message.From.Id,
@@ -123,17 +121,23 @@ namespace Niverobot.Services
         {
             return _context.Reminders.Where(x => x.TriggerDate < currentDate && x.Sent == false);
         }
-        
+
         public void SetReminderSend(int id)
         {
             var reminder = _context.Reminders.FirstOrDefault(x => x.Id == id);
             if (reminder == null) return;
-            
+
             var updatedReminder = reminder;
             updatedReminder.Sent = true;
-            
-            _context.Entry(reminder).CurrentValues.SetValues(updatedReminder);  
+
+            _context.Entry(reminder).CurrentValues.SetValues(updatedReminder);
             _context.SaveChanges();
+        }
+
+        private DateTime ConvertFromWesternEuropeanToUtc(DateTime westernEuropeanTime)
+        {
+            return TimeZoneInfo.ConvertTime(westernEuropeanTime,
+                TimeZoneInfo.FindSystemTimeZoneById("W. Europe Standard Time"), TimeZoneInfo.Utc);
         }
     }
 }
