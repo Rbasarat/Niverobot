@@ -1,13 +1,12 @@
 variables:
   # Use TLS https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled
   DOCKER_TLS_CERTDIR: "/certs"
-  IMAGE_NAME: niverobot
   REGISTRY_USER: niverhawk
 
 stages:
-    - build
-    - release
-    - deploy
+  - build
+  - release
+  - deploy
 
 build:
   image: docker:19.03.1
@@ -16,43 +15,54 @@ build:
   before_script:
     - cd Niverobot
   script:
-    - docker build -t $CI_REGISTRY/niverhawk/$IMAGE_NAME -f Niverobot.WebApi/Dockerfile .
+    - docker build -t $CI_REGISTRY/niverhawk/niverobot/niverobot -f Niverobot.WebApi/Dockerfile .
+    - docker build -t $CI_REGISTRY/niverhawk/niverbot/dateparser -f Niverobot.Dateparser/Dockerfile .
+    - docker build -t $CI_REGISTRY/niverhawk/niverobot/consumer -f Niverobot.Consumer/Dockerfile .
   stage: build
   except:
-    - master
+    - master 
+
 
 release:
   image: docker:19.03.1
   services:
     - docker:19.03.1-dind
-  only:
-    - master
+  # only:
+  #   - master
   before_script:
-    - docker login -u $GITLAB_USER_NAME -p $ACCESS_TOKEN $CI_REGISTRY
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - cd Niverobot
   script:
-    - docker build -t $CI_REGISTRY/$REGISTRY_USER/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA -f Niverobot.WebApi/Dockerfile .
-    - docker push $CI_REGISTRY/$REGISTRY_USER/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA
+    - docker build -t $CI_REGISTRY/$REGISTRY_USER/niverobot/niverobot:$CI_COMMIT_SHORT_SHA -f Niverobot.WebApi/Dockerfile .
+    - docker push $CI_REGISTRY/$REGISTRY_USER/niverobot/niverobot:$CI_COMMIT_SHORT_SHA
+    - docker build -t $CI_REGISTRY/$REGISTRY_USER/niverobot/dateparser:$CI_COMMIT_SHORT_SHA -f Niverobot.Dateparser/Dockerfile .
+    - docker push $CI_REGISTRY/$REGISTRY_USER/niverobot/dateparser:$CI_COMMIT_SHORT_SHA
+    - docker build -t $CI_REGISTRY/$REGISTRY_USER/niverobot/consumer:$CI_COMMIT_SHORT_SHA -f Niverobot.Consumer/Dockerfile .
+    - docker push $CI_REGISTRY/$REGISTRY_USER/niverobot/consumer:$CI_COMMIT_SHORT_SHA
   after_script:
     - docker logout $CI_REGISTRY
   stage: release
 
 deploy:
   image: ubuntu:latest
-  only:
-    - master
+  # only:
+  #   - master
   stage: deploy
   before_script:
-  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
-  - eval $(ssh-agent -s)
-  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
-  - mkdir -p ~/.ssh && touch ~/.ssh/known_hosts
-  - ssh-keyscan -t rsa 51.83.74.19 > ~/.ssh/known_hosts
-  - chmod 644 ~/.ssh/known_hosts
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - mkdir -p ~/.ssh && touch ~/.ssh/known_hosts
+    - ssh-keyscan -t rsa 51.83.74.19 > ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
 
   script:
     - ssh deployer@51.83.74.19 docker login -u $GITLAB_USER_NAME -p $ACCESS_TOKEN $CI_REGISTRY
-    - ssh deployer@51.83.74.19 docker pull $CI_REGISTRY/$REGISTRY_USER/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA
-    - ssh deployer@51.83.74.19 docker stop niverobot 
-    - ssh deployer@51.83.74.19 docker rm niverobot 
-    - ssh deployer@51.83.74.19 docker run -d -e BotConfiguration__BotToken=$BOT_TOKEN -p 5000:80 --name niverobot -v /home/niverhawk/niverobot:/app/Logs $CI_REGISTRY/niverhawk/$IMAGE_NAME
+    - ssh deployer@51.83.74.19 docker pull $CI_REGISTRY/$REGISTRY_USER/niverobot/niverobot:$CI_COMMIT_SHORT_SHA
+    - ssh deployer@51.83.74.19 docker pull $CI_REGISTRY/$REGISTRY_USER/niverobot/dateparser:$CI_COMMIT_SHORT_SHA
+    - ssh deployer@51.83.74.19 docker pull $CI_REGISTRY/$REGISTRY_USER/niverobot/consumer:$CI_COMMIT_SHORT_SHA
+    - ssh deployer@51.83.74.19 docker stop niverobot dateparser consumer
+    - ssh deployer@51.83.74.19 docker rm niverobot dateparser consumer
+    - ssh deployer@51.83.74.19 docker run -d --name niverobot --network niverobot_default -e BotConfiguration__BotToken=$BOT_TOKEN -e ConnectionStrings__SqlServer=$CONNECTION_STRING_SQL -e ConnectionStrings__DateParser=$CONNECTION_STRING_DATEPARSER -p 5000:80 -v /home/niverhawk/niverobot:/app/Logs/Niverobot.WebApi $CI_REGISTRY/niverhawk/niverobot/niverobot:$CI_COMMIT_SHORT_SHA
+    - ssh deployer@51.83.74.19 docker run -d --name dateparser --network niverobot_default $CI_REGISTRY/niverhawk/niverobot/dateparser:$CI_COMMIT_SHORT_SHA 
+    - ssh deployer@51.83.74.19 docker run -d --name consumer --network niverobot_default -e BotConfiguration__BotToken=$BOT_TOKEN -e ConnectionStrings__SqlServer=$CONNECTION_STRING_SQL -e ConnectionStrings__DateParser=$CONNECTION_STRING_DATEPARSER  $CI_REGISTRY/niverhawk/niverobot/consumer:$CI_COMMIT_SHORT_SHA 

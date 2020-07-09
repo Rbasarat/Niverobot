@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Niverobot.Domain": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

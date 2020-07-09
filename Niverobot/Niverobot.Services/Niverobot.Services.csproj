@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Niverobot.Domain\Niverobot.Domain.csproj" />
+      <ProjectReference Include="..\Niverobot.Interfaces\Niverobot.Interfaces.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="HttpToSocks5Proxy" Version="1.4.0" />
+      <PackageReference Include="NodaTime" Version="2.4.7" />
+      <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
+    </ItemGroup>
+
+</Project>

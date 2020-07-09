@@ -1,11 +1,13 @@
-using Domain;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Niverobot.WebApi.Interfaces;
-using Niverobot.WebApi.Services;
+using Niverobot.Domain;
+using Niverobot.Domain.EfModels;
+using Niverobot.Interfaces;
+using Niverobot.Services;
 
 namespace Niverobot.WebApi
 {
@@ -16,20 +18,25 @@ namespace Niverobot.WebApi
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
             services.AddMvc().AddNewtonsoftJson();
 
-            services.AddScoped<ITelegramUpdateService, TelegramUpdateService>();
-            services.AddSingleton<ITelegramBotService, TelegramBotService>();
-            services.AddSingleton<IMessageService, MessageService>();
-            services.AddTransient<IDadJokeService, DadJokeService>();
+            services.AddScoped<IDadJokeService, DadJokeService>();
+            services.AddScoped<ITimezoneService, TimezoneService>();
+            services.AddSingleton(Configuration);
+            
             services.Configure<BotConfiguration>(Configuration.GetSection("BotConfiguration"));
 
+            services.AddDbContext<NiveroBotContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("SqlServer")));
+            
+            services.AddInternalServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

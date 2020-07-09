@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Domain
+﻿namespace Niverobot.Domain
 {
     public class BotConfiguration
     {

@@ -1,21 +1,23 @@
-﻿using Niverobot.WebApi.Interfaces;
-using Serilog;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using Niverobot.Interfaces;
+using Serilog;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 
-namespace Niverobot.WebApi.Services
+namespace Niverobot.Services
 {
     public class MessageService : IMessageService
     {
         private readonly ITelegramBotService _telegramBotService;
         private readonly IDadJokeService _dadJokeService;
+        private readonly IReminderService _reminderService;
 
-        public MessageService(ITelegramBotService telegramBotService, IDadJokeService dadJokeService)
+        public MessageService(ITelegramBotService telegramBotService, IDadJokeService dadJokeService, IReminderService reminderService)
         {
             _telegramBotService = telegramBotService;
             _dadJokeService = dadJokeService;
+            _reminderService = reminderService;
         }
 
         public async Task HandleTextMessageAsync(Update update)
@@ -33,10 +35,16 @@ namespace Niverobot.WebApi.Services
                         text: joke
                     );
                     break;
+                case ".reminder":
+                    Log.Information("received reminder with chat id:{0}", message.Chat.Id);
+                    await _reminderService.HandleReminderAsync(update);
+
+                    break;
                 case ".niverhelp":
 
                     const string usage = "Usage:\n" +
-                        ".dadjoke   - Tells you a dadjoke\n";
+                        ".dadjoke - Tells you a dadjoke\n" +
+                        ".reminder - Set up a reminder. Use -h for more information. ";
 
                     await _telegramBotService.Client.SendTextMessageAsync(
                         chatId: message.Chat.Id,

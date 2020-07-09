@@ -1,10 +1,10 @@
-using Domain;
 using Microsoft.Extensions.Options;
 using MihaZupan;
-using Niverobot.WebApi.Interfaces;
+using Niverobot.Domain;
+using Niverobot.Interfaces;
 using Telegram.Bot;
 
-namespace Niverobot.WebApi.Services
+namespace Niverobot.Services
 {
     public class TelegramBotService : ITelegramBotService
     {

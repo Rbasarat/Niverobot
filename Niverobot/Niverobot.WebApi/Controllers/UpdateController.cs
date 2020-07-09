@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Niverobot.WebApi.Interfaces;
+using Niverobot.Interfaces;
 using Telegram.Bot.Types;
 
 namespace Niverobot.WebApi.Controllers
@@ -21,7 +21,7 @@ namespace Niverobot.WebApi.Controllers
         public async Task<IActionResult> Post([FromBody]Update update)
         {
             await _updateService.EchoAsync(update);
-            return Ok();
+            return Ok(); 
         }
     }
 }

@@ -1,0 +1,26 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+
+option java_multiple_files = true;
+option java_package = "io.grpc.examples.helloworld";
+option java_outer_classname = "HelloWorldProto";
+option objc_class_prefix = "HLW";
+
+package dateparser;
+
+service DateParser {
+  // Parses natural date to datetime object
+  rpc ParseDate (ParseDateRequest) returns (ParseDateReply) {}
+}
+
+// Request message for parsing date
+message ParseDateRequest {
+  string NaturalDate = 1;
+}
+
+// Response message for parsing date
+message ParseDateReply {
+  google.protobuf.Timestamp ParsedDate = 1;
+  float Offset = 2;
+  string Date = 3;
+}
