@@ -8,6 +8,7 @@ import datetime
 import dateparser_pb2
 import dateparser_pb2_grpc
 
+# python -m grpc_tools.protoc -I../Niverobot.protos --python_out=. --grpc_python_out=. dateparser.proto
 # TODO: Error handling
 # TODO: Add logging
 # https://github.com/scrapinghub/dateparser#features
