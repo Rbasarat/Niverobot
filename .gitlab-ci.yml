@@ -1,28 +1,60 @@
-variables:
-  # Use TLS https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled
-  DOCKER_TLS_CERTDIR: "/certs"
-  REGISTRY_USER: niverhawk
+stages:
+  - build
+  - infrastructure
+  - deploy
+#
+#build-python:
+#  image: python:3.8
+#  stage: build
+#  before_script:
+#    - cd Niverobot/Niverobot.Dateparser
+#  script:
+#    - python -m pip install -r requirements.txt
+#    - python -m grpc_tools.protoc -I../Niverobot.Protos --python_out=. --grpc_python_out=. ../Niverobot.Protos/dateparser.proto
+#    - cp -a . $CI_PROJECT_DIR/artifacts
+#  artifacts:
+#    paths:
+#      - $CI_PROJECT_DIR/artifacts
 
-#stages:
-#  - build
-#  - release
-#  - deploy
-
-#build:
-#  image: docker:19.03.1
-#  services:
-#    - docker:19.03.1-dind
+#build-dotnet:
+#  image: mcr.microsoft.com/dotnet/core/sdk:3.1
 #  before_script:
 #    - cd Niverobot
+#    - dotnet restore
 #  script:
-#    - docker build -t $CI_REGISTRY/niverhawk/niverobot/niverobot -f Niverobot.WebApi/Dockerfile .
-#    - docker build -t $CI_REGISTRY/niverhawk/niverbot/dateparser -f Niverobot.Dateparser/Dockerfile .
-#    - docker build -t $CI_REGISTRY/niverhawk/niverobot/consumer -f Niverobot.Consumer/Dockerfile .
+#    - dotnet build --configuration release
+#    - dotnet publish --configuration release --output $CI_PROJECT_DIR/artifacts/Niverobot.Consumer/ Niverobot.Consumer/Niverobot.Consumer.csproj
+#    - dotnet publish --configuration release  --output $CI_PROJECT_DIR/artifacts/Niverobot.WebApi/ Niverobot.WebApi/Niverobot.WebApi.csproj
 #  stage: build
-#  except:
-#    - master 
-#
-#
+#  artifacts:
+#    paths:
+#      - artifacts/Niverobot.WebApi/
+#      - artifacts/Niverobot.Consumer/
+
+
+pulumi-up:
+  stage: infrastructure
+  image: mcr.microsoft.com/dotnet/core/sdk:3.1-buster
+  script:
+    - cd Niverobot/Niverobot.Infrastructure
+    - chmod +x ./scripts/*.sh
+    - ./scripts/pulumi-up.sh
+  artifacts:
+    paths:
+      - pulumi-log.txt
+  only:
+    - master
+
+pulumi-preview:
+  stage: infrastructure
+  image: mcr.microsoft.com/dotnet/core/sdk:3.1-buster
+  script:
+    - cd Niverobot/Niverobot.Infrastructure
+    - chmod +x ./scripts/*.sh
+    - ./scripts/pulumi-preview.sh
+  only:
+    - merge_requests
+
 #release:
 #  image: docker:19.03.1
 #  services:
@@ -65,4 +97,4 @@ variables:
 #    - ssh deployer@51.83.74.19 docker rm niverobot dateparser consumer
 #    - ssh deployer@51.83.74.19 docker run -d --name niverobot --network niverobot_default -e BotConfiguration__BotToken=$BOT_TOKEN -e ConnectionStrings__SqlServer=$CONNECTION_STRING_SQL -e ConnectionStrings__DateParser=$CONNECTION_STRING_DATEPARSER -p 5000:80 -v /home/niverhawk/niverobot:/app/Logs/Niverobot.WebApi $CI_REGISTRY/niverhawk/niverobot/niverobot:$CI_COMMIT_SHORT_SHA
 #    - ssh deployer@51.83.74.19 docker run -d --name dateparser --network niverobot_default $CI_REGISTRY/niverhawk/niverobot/dateparser:$CI_COMMIT_SHORT_SHA 
-#    - ssh deployer@51.83.74.19 docker run -d --name consumer --network niverobot_default -e BotConfiguration__BotToken=$BOT_TOKEN -e ConnectionStrings__SqlServer=$CONNECTION_STRING_SQL -e ConnectionStrings__DateParser=$CONNECTION_STRING_DATEPARSER  $CI_REGISTRY/niverhawk/niverobot/consumer:$CI_COMMIT_SHORT_SHA 
+#    - ssh deployer@51.83.74.19 docker run -d --name consumer --network niverobot_default -e BotConfiguration__BotToken=$BOT_TOKEN -e ConnectionStrings__SqlServer=$CONNECTION_STRING_SQL -e ConnectionStrings__DateParser=$CONNECTION_STRING_DATEPARSER  $CI_REGISTRY/niverhawk/niverobot/consumer:$CI_COMMIT_SHORT_SHA
