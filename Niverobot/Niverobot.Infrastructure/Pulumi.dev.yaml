@@ -1,0 +1,7 @@
+config:
+  Niverobot.Infrastructure:AdminSqlPassword:
+    secure: AAABAJT9c7+rr5eqEQ9KNFGrMRWM1kOHdslo0jmKjR4UeNycW9GsXi9zdfbHSOHT
+  Niverobot.Infrastructure:botToken:
+    secure: AAABAB4HQ0R0L9V885iuFrD9Zyt+jXpz62YPxzpd6iRhVLhQKEhal9UhyGNMqug8SDsL1yjSuJq5RzVMMM05xIEFqmpmrYmdHAXsp4M=
+  Niverobot.Infrastructure:sqlAdmin:
+    secure: AAABAAwv6AZmE9kYz+ew+m+QWexSQDlJCesLibpUO3vpHJAXERNvXsU=
