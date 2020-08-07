@@ -352,5 +352,14 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
+#jetbrains
+.idea/
+
+# Mac
+.DS_Store
+
+#python vent
+venv/
+
 **/appsettings.Development.json
 **/appsettings.Production.json
