@@ -8,6 +8,7 @@ using Niverobot.Domain;
 using Niverobot.Domain.EfModels;
 using Niverobot.Interfaces;
 using Niverobot.Services;
+using Serilog;
 
 namespace Niverobot.WebApi
 {
@@ -35,6 +36,9 @@ namespace Niverobot.WebApi
             services.AddDbContext<NiveroBotContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("SqlServer")));
             
+            // // The following line enables Application Insights telemetry collection.
+            services.AddApplicationInsightsTelemetry();
+            
             services.AddInternalServices();
         }
 
@@ -49,7 +53,9 @@ namespace Niverobot.WebApi
             app.UseRouting();
 
             app.UseAuthorization();
-
+            
+            app.UseSerilogRequestLogging();
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

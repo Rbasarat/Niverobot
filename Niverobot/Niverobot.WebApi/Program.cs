@@ -11,11 +11,22 @@ namespace Niverobot.WebApi
     {
         public static void Main(string[] args)
         {
+            var configuration = LoadConfiguration();
+
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration)
+                .WriteTo.ApplicationInsights(
+                    new TelemetryConfiguration {InstrumentationKey = configuration.GetSection("ApplicationInsights:InstrumentationKey").Value},
+                    TelemetryConverter.Traces)
+                .CreateLogger();
+
+            Log.Information("starting up...");
             CreateHostBuilder(args).Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .UseSerilog()
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
                     var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
@@ -25,11 +36,9 @@ namespace Niverobot.WebApi
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>()
-                     .UseSerilog((hostingContext, loggerConfiguration) => loggerConfiguration
-                     .ReadFrom.Configuration(hostingContext.Configuration)
-                     .WriteTo.ApplicationInsights(new TelemetryConfiguration{ InstrumentationKey = LoadConfiguration().GetSection("AppInsights:Key").Value },TelemetryConverter.Traces));
+                    webBuilder.UseStartup<Startup>();
                 });
+
         private static IConfiguration LoadConfiguration()
         {
             var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
