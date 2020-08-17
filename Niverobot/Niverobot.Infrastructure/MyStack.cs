@@ -1,4 +1,5 @@
 using Pulumi;
+using Pulumi.Azure.AppInsights;
 using Pulumi.Azure.AppService;
 using Pulumi.Azure.AppService.Inputs;
 using Pulumi.Azure.Core;
@@ -81,6 +82,13 @@ class MyStack : Stack
             // }
         });
 
+        var apiInsights = new Insights("WebApi-ai", new InsightsArgs
+        {
+            ApplicationType = "Web",
+            Name = "WebApi-ai",
+            ResourceGroupName = resourceGroup.Name,
+        });
+        
         // Create the web api.
         var webApi = new AppService("WebApi", new AppServiceArgs
         {
@@ -89,9 +97,8 @@ class MyStack : Stack
             AppServicePlanId = appServicePlan.Id,
             AppSettings = new InputMap<string>
             {
-                {
-                    "BotConfiguration__BotToken", botToken
-                }
+                {"BotConfiguration__BotToken", botToken},
+                {"AppInsights__key", apiInsights.InstrumentationKey}
             },
             ConnectionStrings =
             {
