@@ -104,7 +104,8 @@ class MyStack : Stack
                         {
                             (string server, string db, string pwd) = t;
                             return
-                                $"Server= tcp:{server}.database.windows.net;initial catalog={db};userID={dbAdminUsername};password={pwd};Persist Security Info=true;";
+                                
+                                $"Server=tcp:{server}.database.windows.net;initial catalog={db};user ID={dbAdminUsername};password={pwd};Persist Security Info=False;MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
                         }),
                 },
                 new AppServiceConnectionStringArgs
@@ -146,7 +147,7 @@ class MyStack : Stack
                         {
                             (string server, string db, string pwd) = t;
                             return
-                                $"Server= tcp:{server}.database.windows.net;initial catalog={db};userID={dbAdminUsername};password={pwd};Persist Security Info=true;";
+                                $"Server=tcp:{server}.database.windows.net;initial catalog={db};user ID={dbAdminUsername};password={pwd};Persist Security Info=False;MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
                         }),
                 },
                 new AppServiceConnectionStringArgs
