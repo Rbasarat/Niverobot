@@ -98,7 +98,7 @@ class MyStack : Stack
             AppSettings = new InputMap<string>
             {
                 {"BotConfiguration__BotToken", botToken},
-                {"AppInsights__key", apiInsights.InstrumentationKey}
+                {"ApplicationInsights__InstrumentationKey", apiInsights.InstrumentationKey}
             },
             ConnectionStrings =
             {
