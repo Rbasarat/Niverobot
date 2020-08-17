@@ -20,7 +20,7 @@ class MyStack : Stack
         var config = new Config();
 
         // Retrieve all config we need.
-        var dbAdminUsername = config.Get("sqlAdmin") ?? "admin";
+        var dbAdminUsername = config.Get("sqlAdmin") ?? "niverhawk";
         var dbAdminPassword = config.RequireSecret("AdminSqlPassword");
         var botToken = config.RequireSecret("botToken");
 
@@ -54,14 +54,14 @@ class MyStack : Stack
         });
 
         // Define the app service plan we want to use.
-        // Select Linux since we have a python app.
+        // Select Linux since we have a python app. // nope.
         // App service plans cannot have different os running(restriction of azure).
         var appServicePlan = new Plan("AppServicePlan", new PlanArgs
         {
             Name = "Niverobot-AppServicePlan",
             ResourceGroupName = resourceGroup.Name,
-            Kind = "Linux",
-            Reserved = true,
+            // Kind = "App",
+            // Reserved = true,
             Sku = new PlanSkuArgs
             {
                 Tier = "Basic",
@@ -89,7 +89,9 @@ class MyStack : Stack
             AppServicePlanId = appServicePlan.Id,
             AppSettings = new InputMap<string>
             {
-                {"BotConfiguration__BotToken", botToken}
+                {
+                    "BotConfiguration__BotToken", botToken
+                }
             },
             ConnectionStrings =
             {
@@ -97,8 +99,13 @@ class MyStack : Stack
                 {
                     Name = "SqlServer",
                     Type = "SQLAzure",
-                    Value =
-                        $"Server= tcp:{sqlServer.Name}.database.windows.net;initial catalog={database.Name};userID={dbAdminUsername};password={dbAdminPassword};Min Pool Size=0;Max Pool Size=30;Persist Security Info=true;",
+                    Value = Output.Tuple<string, string, string>(sqlServer.Name, database.Name, dbAdminPassword).Apply(
+                        t =>
+                        {
+                            (string server, string db, string pwd) = t;
+                            return
+                                $"Server= tcp:{server}.database.windows.net;initial catalog={db};userID={dbAdminUsername};password={pwd};Persist Security Info=true;";
+                        }),
                 },
                 new AppServiceConnectionStringArgs
                 {
@@ -134,8 +141,13 @@ class MyStack : Stack
                 {
                     Name = "SqlServer",
                     Type = "SQLAzure",
-                    Value =
-                        $"Server= tcp:{sqlServer.Name}.database.windows.net;initial catalog={database.Name};userID={dbAdminUsername};password={dbAdminPassword};Min Pool Size=0;Max Pool Size=30;Persist Security Info=true;",
+                    Value = Output.Tuple<string, string, string>(sqlServer.Name, database.Name, dbAdminPassword).Apply(
+                        t =>
+                        {
+                            (string server, string db, string pwd) = t;
+                            return
+                                $"Server= tcp:{server}.database.windows.net;initial catalog={db};userID={dbAdminUsername};password={pwd};Persist Security Info=true;";
+                        }),
                 },
                 new AppServiceConnectionStringArgs
                 {
