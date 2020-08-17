@@ -84,7 +84,7 @@ class MyStack : Stack
 
         var apiInsights = new Insights("WebApi-ai", new InsightsArgs
         {
-            ApplicationType = "Web",
+            ApplicationType = "web",
             Name = "WebApi-ai",
             ResourceGroupName = resourceGroup.Name,
         });
