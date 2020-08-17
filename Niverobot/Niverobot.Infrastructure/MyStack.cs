@@ -82,10 +82,10 @@ class MyStack : Stack
             // }
         });
 
-        var apiInsights = new Insights("WebApi-ai", new InsightsArgs
+        var apiInsights = new Insights("Niverobot.WebApi-ai", new InsightsArgs
         {
             ApplicationType = "web",
-            Name = "WebApi-ai",
+            Name = "Niverobot.WebApi-ai",
             ResourceGroupName = resourceGroup.Name,
         });
         
