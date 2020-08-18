@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using Niverobot.Domain;
 using Niverobot.Domain.EfModels;
 using Niverobot.Interfaces;
 using Niverobot.Services;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Serilog;
 
 namespace Niverobot.WebApi
@@ -34,7 +36,10 @@ namespace Niverobot.WebApi
             services.Configure<BotConfiguration>(Configuration.GetSection("BotConfiguration"));
 
             services.AddDbContext<NiveroBotContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("SqlServer")));
+                options.UseMySql(Configuration.GetConnectionString("SqlServer"), mySqlOptions => mySqlOptions
+                    // replace with your Server Version and Type
+                    .ServerVersion(new Version(8, 0, 18), ServerType.MySql)
+                ));
             
             // // The following line enables Application Insights telemetry collection.
             services.AddApplicationInsightsTelemetry();

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Niverobot.Domain;
 using Niverobot.Domain.EfModels;
 using Niverobot.WebApi;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Serilog;
 
 namespace Niverobot.Consumer
@@ -44,7 +45,10 @@ namespace Niverobot.Consumer
                     services.Configure<BotConfiguration>(config.GetSection("BotConfiguration"));
 
                     services.AddDbContext<NiveroBotContext>(options =>
-                        options.UseSqlServer(config.GetConnectionString("SqlServer")));
+                        options.UseMySql(config.GetConnectionString("SqlServer"), mySqlOptions => mySqlOptions
+                            // replace with your Server Version and Type
+                            .ServerVersion(new Version(8, 0, 18), ServerType.MySql)
+                        ));
 
                     services.AddInternalServices();
                     services.AddHostedService<Consumer>();
