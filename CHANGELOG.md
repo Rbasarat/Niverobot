@@ -3,13 +3,17 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
-v1.2.0
+v2.0.0
 ### Added
 - Infrastructure as code for azure deployment *N.b. We will not use this*
+- MySQL as database (was mssql)
+- Polling for chatbot (was webhooks)
 ### Changed
 - Removed docker from app
 - Updated gitlab CI to build without docker
 - Updated packages
+- Removed SQLserver
+- Removed webhooks
 ### Fixed
 - Set timezone harcdoded to netherlands 
 v1.1.0
