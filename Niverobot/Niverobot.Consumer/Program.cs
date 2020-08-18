@@ -38,12 +38,6 @@ namespace Niverobot.Consumer
                     // Set up the objects we need to get to configuration settings
                     var config = LoadConfiguration();
 
-                    // Set up logger.
-                    Log.Logger = new LoggerConfiguration()
-                        .ReadFrom.Configuration(config)
-                        .CreateLogger();
-
-
                     // Add the config to our DI container for later user
                     services.AddSingleton(config);
 
@@ -57,35 +51,6 @@ namespace Niverobot.Consumer
                 });
 
             builder.StartAsync();
-        }
-
-        private static IServiceCollection ConfigureServices()
-        {
-            IServiceCollection services = new ServiceCollection();
-            // Set up the objects we need to get to configuration settings
-            var config = LoadConfiguration();
-
-            // Set up logger.
-            Log.Logger = new LoggerConfiguration()
-                .ReadFrom.Configuration(config)
-                .WriteTo.Console()
-                .CreateLogger();
-
-
-            // Add the config to our DI container for later user
-            services.AddSingleton(config);
-
-            services.Configure<BotConfiguration>(config.GetSection("BotConfiguration"));
-
-            services.AddDbContext<NiveroBotContext>(options =>
-                options.UseSqlServer(config.GetConnectionString("SqlServer")));
-
-            services.AddInternalServices();
-
-            // IMPORTANT! Register our application entry point
-            services.AddTransient<Consumer>();
-
-            return services;
         }
 
         private static IConfiguration LoadConfiguration()
