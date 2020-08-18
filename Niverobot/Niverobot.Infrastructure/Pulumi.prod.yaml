@@ -1,0 +1,11 @@
+config:
+  Niverobot.Infrastructure:AdminSqlPassword:
+    secure: AAABAJXWeyX3/qmKUIYkcV6hdU6g8fLJS+6fBqvdOO9BbpD8DHEjmNuKEttEpveErw==
+  Niverobot.Infrastructure:botToken:
+    secure: AAABAPalQNYT/wGUB0SULg79aV4jUZVRJWsMkutCD+EJTM3iKp4NAxFAffO90pNHVzz+eD3/TSfhz3pUgwCk80P8GpOpB7oepWyUBWU=
+  Niverobot.Infrastructure:sqlAdmin: niverhawk
+  azure:clientId: 7f549417-66c1-4b52-b626-980b0f97d959
+  azure:clientSecret:
+    secure: AAABADNabZTQmhDg9NMTnUUALWgJCQwC7egSX9tbwDnHn7WHaYOBM6KVawa7jg7ZK3toR0B0uEHR1KrtFfIbMMHA
+  azure:subscriptionId: 7ac5c3d0-fd8f-4580-8326-8e478b6131d6
+  azure:tenantId: b7dbb667-11e0-4d99-9e28-467aa95b336a

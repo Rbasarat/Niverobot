@@ -8,6 +8,7 @@ using Niverobot.Domain;
 using Niverobot.Domain.EfModels;
 using Niverobot.Interfaces;
 using Niverobot.Services;
+using Serilog;
 
 namespace Niverobot.WebApi
 {
@@ -35,11 +36,14 @@ namespace Niverobot.WebApi
             services.AddDbContext<NiveroBotContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("SqlServer")));
             
+            // // The following line enables Application Insights telemetry collection.
+            services.AddApplicationInsightsTelemetry();
+            
             services.AddInternalServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, NiveroBotContext context)
         {
             if (env.IsDevelopment())
             {
@@ -49,11 +53,16 @@ namespace Niverobot.WebApi
             app.UseRouting();
 
             app.UseAuthorization();
-
+            
+            app.UseSerilogRequestLogging();
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+            
+            // Apply migrations on startup.
+            context.Database.Migrate();
         }
     }
 }

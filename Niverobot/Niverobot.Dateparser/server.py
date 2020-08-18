@@ -8,6 +8,7 @@ import datetime
 import dateparser_pb2
 import dateparser_pb2_grpc
 
+# python -m grpc_tools.protoc -I../Niverobot.protos --python_out=. --grpc_python_out=. dateparser.proto
 # TODO: Error handling
 # TODO: Add logging
 # https://github.com/scrapinghub/dateparser#features
@@ -32,7 +33,7 @@ class DateParser(dateparser_pb2_grpc.DateParserServicer):
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     dateparser_pb2_grpc.add_DateParserServicer_to_server(DateParser(), server)
-    server.add_insecure_port('[::]:50051')
+    server.add_insecure_port('[::]:80')
     server.start()
     print("server running")
     server.wait_for_termination()

@@ -1,4 +1,4 @@
-﻿using Dateparser;
+﻿using DateParser;
 
 namespace Niverobot.Interfaces
 {
