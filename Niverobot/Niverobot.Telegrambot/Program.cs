@@ -5,11 +5,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Niverobot.Domain;
 using Niverobot.Domain.EfModels;
-using Niverobot.Telegrambot;
+using Niverobot.Interfaces;
+using Niverobot.Services;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Serilog;
 
-namespace Niverobot.Consumer
+namespace Niverobot.Telegrambot
 {
     class Program
     {
@@ -19,8 +20,24 @@ namespace Niverobot.Consumer
                 .ReadFrom.Configuration(LoadConfiguration())
                 .WriteTo.Console()
                 .CreateLogger();
-            
-            var builder = new HostBuilder()
+
+            Log.Information("Starting up...");
+            using (var host = CreateHostBuilder(args).Build())
+            {
+                host.StartAsync();
+                var lifetime = host.Services.GetRequiredService<IHostApplicationLifetime>();
+
+                // insert other console app code here
+
+                lifetime.StopApplication();
+                host.WaitForShutdownAsync();
+            }
+        }
+
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host
+                .CreateDefaultBuilder(args)
+                .UseConsoleLifetime()
                 .UseSerilog()
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
@@ -39,6 +56,8 @@ namespace Niverobot.Consumer
                     // Set up the objects we need to get to configuration settings
                     var config = LoadConfiguration();
 
+                    services.AddScoped<IDadJokeService, DadJokeService>();
+
                     // Add the config to our DI container for later user
                     services.AddSingleton(config);
 
@@ -46,16 +65,13 @@ namespace Niverobot.Consumer
 
                     services.AddDbContext<NiveroBotContext>(options =>
                         options.UseMySql(config.GetConnectionString("SqlServer"), mySqlOptions => mySqlOptions
-                            // replace with your Server Version and Type
                             .ServerVersion(new Version(8, 0, 18), ServerType.MySql)
                         ));
 
                     services.AddInternalServices();
-                    services.AddHostedService<Consumer>();
+                    services.AddHostedService<DatabaseStartup>();
+                    services.AddHostedService<Telegrambot>();
                 });
-
-            builder.StartAsync();
-        }
 
         private static IConfiguration LoadConfiguration()
 

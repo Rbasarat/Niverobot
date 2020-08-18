@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Niverobot.Interfaces;
 using Serilog;
+using Telegram.Bot.Args;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 
@@ -20,7 +21,7 @@ namespace Niverobot.Services
             _reminderService = reminderService;
         }
 
-        public async Task HandleTextMessageAsync(Update update)
+        public async Task HandleTextMessageAsync(MessageEventArgs update)
         {
             var message = update.Message;
 
