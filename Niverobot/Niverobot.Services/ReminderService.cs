@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Niverobot.Domain.EfModels;
 using Niverobot.Interfaces;
 using Serilog;
-using Telegram.Bot.Types;
+using Telegram.Bot.Args;
 
 namespace Niverobot.Services
 {
@@ -22,7 +22,7 @@ namespace Niverobot.Services
             _context = context;
         }
 
-        public async Task HandleReminderAsync(Update update)
+        public async Task HandleReminderAsync(MessageEventArgs update)
         {
             // .reminders to show list of all reminders
             // You can then edit your own reminders and delete them.
@@ -52,13 +52,13 @@ namespace Niverobot.Services
                       "`.reminder wish Linda happy birthday on June 1st`\n" +
                       "`.reminder \"Update the project status\" on Monday at 9am utc+2`\n" +
                       "`.reminder reminder! interview in 3 hours`\n" +
-                      "*I am timezone unaware, so help me by adding your timezone to the reminder!*",
+                      "*My timezone is set on utc+2!*",
                 parseMode: Telegram.Bot.Types.Enums.ParseMode.Markdown
             );
             ;
         }
 
-        private async Task SaveReminderAsync(Update update)
+        private async Task SaveReminderAsync(MessageEventArgs update)
         {
             try
             {

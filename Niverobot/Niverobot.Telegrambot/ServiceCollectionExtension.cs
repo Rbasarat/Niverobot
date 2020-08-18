@@ -1,11 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Niverobot.Domain;
-using Niverobot.Domain.EfModels;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Niverobot.Interfaces;
 using Niverobot.Services;
 
-namespace Niverobot.WebApi
+namespace Niverobot.Telegrambot
 {
     public static class ServiceCollectionExtension
     {
@@ -14,7 +11,6 @@ namespace Niverobot.WebApi
             services.AddSingleton<ITelegramBotService, TelegramBotService>();
             services.AddScoped<IMessageService, MessageService>();  
             services.AddScoped<IReminderService, ReminderService>();
-            services.AddTransient<ITelegramUpdateService, TelegramUpdateService>();
             services.AddScoped<IGRPCService, GrpcService>();
             return services;
         }

@@ -27,7 +27,7 @@
     <ProjectReference Include="..\Niverobot.Domain\Niverobot.Domain.csproj" />
     <ProjectReference Include="..\Niverobot.Interfaces\Niverobot.Interfaces.csproj" />
     <ProjectReference Include="..\Niverobot.Services\Niverobot.Services.csproj" />
-    <ProjectReference Include="..\Niverobot.WebApi\Niverobot.WebApi.csproj" />
+    <ProjectReference Include="..\Niverobot.Telegrambot\Niverobot.Telegrambot.csproj" />
   </ItemGroup>
 
 </Project>
