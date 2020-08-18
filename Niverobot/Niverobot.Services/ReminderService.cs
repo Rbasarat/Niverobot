@@ -75,8 +75,11 @@ namespace Niverobot.Services
                 }
                 else
                 {
-                    // Convert dutch time to utc. This will be a problem when supporting other timezones.
-                    var parsedDateTime = ConvertFromWesternEuropeanToUtc(response.ParsedDate.ToDateTime());
+                    // Convert utc to dutch timezone. This will be a problem when supporting other timezones.
+                    // The consumer counts from utc.
+                    var parsedDateTime =
+                        response.ParsedDate.ToDateTime().AddSeconds(response.Offset).AddSeconds(TimeZoneInfo.Local
+                            .BaseUtcOffset.Seconds);
 
                     var reminder = new Reminder
                     {
@@ -132,12 +135,6 @@ namespace Niverobot.Services
 
             _context.Entry(reminder).CurrentValues.SetValues(updatedReminder);
             _context.SaveChanges();
-        }
-
-        private DateTime ConvertFromWesternEuropeanToUtc(DateTime westernEuropeanTime)
-        {
-            return TimeZoneInfo.ConvertTime(westernEuropeanTime,
-                TimeZoneInfo.FindSystemTimeZoneById("W. Europe Standard Time"), TimeZoneInfo.Utc);
         }
     }
 }

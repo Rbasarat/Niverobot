@@ -1,4 +1,5 @@
-﻿using DateParser;
+﻿using System;
+using DateParser;
 using Grpc.Net.Client;
 using Microsoft.Extensions.Configuration;
 using Niverobot.Interfaces;
@@ -16,7 +17,10 @@ namespace Niverobot.Services
 
         public ParseDateReply ParseDateTimeFromNl(string date)
         {
-            // TODO: add config. + Change to containerized address.
+            // TODO: add config. + Change to containerized address
+            AppContext.SetSwitch(
+            "System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+            
             using var channel = GrpcChannel.ForAddress(_config.GetConnectionString("DateParser"));
             var client = new DateParser.DateParser.DateParserClient(channel);
 
