@@ -3,6 +3,7 @@ A telegram bot with random features
 
 ## Current commands:
  - .dadjoke/.vadergrap: Tells you a dadjoke
+ - .reminder - Set up a reminder. Use -h for more information. 
  
 ### Updating Grpc proto 
  - C# add the (new) protofile to the csproj.
