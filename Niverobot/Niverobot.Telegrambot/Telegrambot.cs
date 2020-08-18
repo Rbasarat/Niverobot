@@ -13,30 +13,27 @@ namespace Niverobot.Telegrambot
 {
     public class Telegrambot : IHostedService
     {
-        static ITelegramBotClient _botClient;
-        private readonly IConfiguration _config;
         private readonly IMessageService _messageService;
+        private readonly ITelegramBotService _telegramBotService;
 
-        public Telegrambot(IConfiguration config, IMessageService messageService)
+        public Telegrambot(IMessageService messageService, ITelegramBotService telegramBotService)
         {
-            _config = config;
             _messageService = messageService;
+            _telegramBotService = telegramBotService;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _botClient = new TelegramBotClient(_config["BotConfiguration:BotToken"]);
-            //
-            var me = _botClient.GetMeAsync().Result;
+            var me = _telegramBotService.Client.GetMeAsync().Result;
             Log.Debug(
                 $"Successfully connected to telegram."
             );
-            _botClient.OnMessage += HandleMessage;
-            _botClient.StartReceiving();
+            _telegramBotService.Client.OnMessage += HandleMessage;
+            _telegramBotService.Client.StartReceiving();
             Console.WriteLine("Press any key to exit");
             Console.ReadKey();
 
-            _botClient.StopReceiving();
+            _telegramBotService.Client.StopReceiving();
             return Task.CompletedTask;
         }
 
