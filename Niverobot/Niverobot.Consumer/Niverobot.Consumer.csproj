@@ -25,5 +25,12 @@
     <ProjectReference Include="..\Niverobot.Services\Niverobot.Services.csproj" />
     <ProjectReference Include="..\Niverobot.Telegrambot\Niverobot.Telegrambot.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
 
 </Project>
